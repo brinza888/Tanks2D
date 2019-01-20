@@ -1,7 +1,7 @@
 import os
 import pygame
 
-pygame.display.set_mode()
+pygame.display.set_mode((600, 600))
 
 
 def load_image(name, color_key=None):
