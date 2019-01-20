@@ -16,7 +16,7 @@ def load_map(file):
 class Level:
     map = []
 
-    def __init__(self, x, y, screen):
+    def __init__(self, screen, x=0, y=0):
         super().__init__()
         # Значения по умолчанию
         self.cell_size = 32
