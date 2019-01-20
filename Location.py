@@ -1,5 +1,6 @@
 import pygame
 import Blocks
+import Entities
 
 
 def load_map(file):
@@ -24,12 +25,15 @@ class Level:
         self.height = len(self.map)
         self.group = pygame.sprite.Group()
         self.screen = screen
-        self.cords = self.x, self.y = x, y
+        self.coords = self.x, self.y = x, y
         for i, row in enumerate(self.map):
             for j, block_id in enumerate(row.split()):
                 bx = self.x + self.cell_size * j
                 by = self.y + self.cell_size * i
                 Blocks.get_by_id(int(block_id))(self.group, bx, by)
+        self.human_coords = [128, 128]
+        self.human = Entities.Human(self.group, *self.human_coords)
+
 
     def change_cell_size(self, size):
         self.cell_size = size
@@ -37,11 +41,15 @@ class Level:
     def render(self, screen):
         self.group.draw(screen)
 
+    def get_event(self, event, dx=0, dy=0):
+        if event == "Human":
+            self.human_coords[0] += dx
+            self.human_coords[1] += dy
+            self.human.move(*self.human_coords)
+
 
 class FirstLevel(Level):
-    map = ["1 1 1 1 1",
-           "1 2 1 1 1",
-           "1 1 1 3 1"]
+    map = ["1 " * (608 // 32) for i in range(0, 608, 32)]
 
 
 class SecondLevel(Level):
