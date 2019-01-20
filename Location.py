@@ -27,7 +27,7 @@ class Level:
         for i, row in enumerate(Level.map):
             for j, block_id in enumerate(row.split()):
                 block = Blocks.get_by_id(int(block_id))()
-                block.rect.x, block.rect.y = self.x, self.y
+                block.rect.x, block.rect.y = self.x + self.cell_size * j, self.y + self.cell_size * i
                 self.table[i].add(block)
 
     def change_cell_size(self, size):
