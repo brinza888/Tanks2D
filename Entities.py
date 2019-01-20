@@ -1,36 +1,25 @@
 import pygame
+import Blocks
+import Texture
 
-GRAVITY = 10
 
+class Entity(pygame.sprite.Sprite):
+    Image = None
 
-# Базовый класс для всех существ
-class Entity (pygame.sprite.Sprite):
-    def __init__(self, x, y, image):
-        super().__init__()  # calling Sprite class constructor
-        self.image = image
+    def __init__(self, group, x=608//32//2, y=608//32/2):
+        self.health = 100
+        self.dmg = 10
+        super(Entity, self).__init__(group)
+        self.image = self.__class__.Image
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
-        self.health = None
-        self.attack = None
-        self.speed = None
-
-    def update(self, *args):
-        pass
-
-    # method for handling events
-    def get_event(self, event):
-        pass
 
 
-# Person (player) entity
-class Person (Entity):
-    def __init__(self, x, y, image):
-        super().__init__(x, y, image)
-        self.speed = 1
+class Human(Entity):
+    Image = Texture.load_image("sand.png")
 
-    def get_event(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                self.rect.x += self.speed
-            elif event.key == pygame.K_LEFT:
-                self.rect.x -= self.speed
+    def move(self, x, y):
+        self.rect.topleft = x, y
+
+    def coords(self):
+        return self.rect.topleft
