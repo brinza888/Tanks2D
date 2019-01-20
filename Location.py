@@ -16,27 +16,30 @@ def load_map(file):
 class Level:
     map = []
 
-    def __init__(self, x, y, screen):
+    def __init__(self, screen, x=0, y=0):
         super().__init__()
         # Значения по умолчанию
         self.cell_size = 32
         self.width, self.height = len(Level.map[0]), len(Level.map)
         self.table = [pygame.sprite.Group() for x in range(self.height)]
         self.screen = screen
-        self.cords = self.x, self.y = x, y
+        self.coords = self.x, self.y = x, y
+        self.map = []
         for i, row in enumerate(Level.map):
+            temp = []
             for j, block_id in enumerate(row.split()):
                 block = Blocks.get_by_id(int(block_id))()
-                block.rect.x, block.rect.y = self.x + self.cell_size * j, self.y + self.cell_size * i
+                temp.append(block)
                 self.table[i].add(block)
+            self.map.append(temp)
 
     def change_cell_size(self, size):
         self.cell_size = size
-        self.width = 1216 // self.cell_size
-        self.height = 1216 // self.cell_size
 
     def render(self):
-        pass
+        for row in range(self.height):
+            for cell in range(self.width):
+                self.map[row][cell].rect.topleft = row * self.cell_size, cell * self.cell_size
 
 
 class FirstLevel(Level):
