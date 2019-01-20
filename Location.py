@@ -1,25 +1,34 @@
 import pygame
+import Blocks
 
 
-class Location(pygame.sprite.Sprite):
+def load_map(file):
+    file = open(file, "rt", encoding="utf8").read().split("\n")
+    map = []
+    for row in file:
+        temp = []
+        for cell in row.split():
+            temp.append(int(cell))
+        map.append(temp)
+    return map
+
+
+class Levels:
+    map = None
+    height, width = None, None
+
     def __init__(self, screen):
         super().__init__()
         # Значения по умолчанию
-        self.board = []
         self.cell_size = 32
-        self.width = 1216 // self.cell_size
-        self.height = 1216 // self.cell_size
-        self.all_sprites = pygame.sprite.Group()
+        self.width = width
+        self.height = height
         self.screen = screen
 
-        self.wall = pygame.sprite.Sprite()
-        self.wall.image = ""
-        self.wall.rect = self.wall.image.get_rect()
+        self.grass = Blocks.Grass.image
+        self.sand = Blocks.Sand.image
+        self.stone = Blocks.stone.image
 
-        self.path = pygame.sprite.Sprite()
-        self.path.image = ""
-        self.path.rect = self.path.image.get_rect()
-        self.reload_board()
 
     def reload_board(self):
         for y in range(self.height):
@@ -40,10 +49,20 @@ class Location(pygame.sprite.Sprite):
                           self.cell_size, self.cell_size)
 
                 if self.board[y][x] == 1:
-                    pygame.draw.rect(self.screen, (255, 255, 255), coords, 1)
+                    self.grass.topleft = y, x
 
                 if self.board[y][x] == 2:
-                    self.path.topleft = y, x
+                    self.sand.topleft = y, x
 
                 if self.board[y][x] == 3:
-                    self.wall.topleft = y, x
+                    self.stone.topleft = y, x
+
+
+class First_lvl(Levels):
+    map = load_map("Map.txt")
+    height, width = len(map), len(map[0])
+
+
+class Second_lvl(Levels):
+    map = load_map("")
+    height, width = len(map), len(map[0])
