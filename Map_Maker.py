@@ -32,7 +32,7 @@ while running:
         elif event.type == pygame.MOUSEMOTION and 1 in event.buttons:
             canvas.on_click(event.pos)
 
-    canvas.render(screen)
+    canvas.draw(screen)
     pygame.display.flip()
 
 pygame.quit()

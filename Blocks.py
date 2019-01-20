@@ -19,6 +19,9 @@ class __Block (pygame.sprite.Sprite):
     def update(self):
         pass
 
+    def on_event(self, event):
+        pass
+
 
 class Nothing (__Block):
     Image = Texture.load_image("nothing.png")
