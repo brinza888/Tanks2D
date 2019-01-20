@@ -1,12 +1,14 @@
 import pygame
-from Location import Location
+import Location
+
 
 pygame.init()
 size = width, height = 1216, 1216
 screen = pygame.display.set_mode(size)
 running = True
 
-loc = Location(screen)
+
+loc = Location.First_lvl(screen)
 loc.render()
 while running:
     for event in pygame.event.get():

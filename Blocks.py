@@ -42,6 +42,7 @@ for cls in __Block.__subclasses__():
 def get_blocks():
     return __blocks.copy()
 
+# 0 - Grass, 1 - Stone, 2 - Sand
 
 def get_by_id(id):
     try:
