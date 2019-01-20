@@ -26,12 +26,21 @@ class Grass (__Block):
     Image = Texture.load_image("grass.png")
 
 
+class Grass2 (__Block):
+    Image = Texture.load_image("grass2.png")
+
+
+class Grass3 (__Block):
+    Image = Texture.load_image("grass3.png")
+
+
 class Stone (__Block):
     Image = Texture.load_image("stone.png")
 
 
 class Sand (__Block):
     Image = Texture.load_image("sand.png")
+
 
 
 __blocks = []
