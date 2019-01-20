@@ -8,12 +8,12 @@ screen = pygame.display.set_mode(size)
 running = True
 
 
-loc = Location.FirstLevel(screen)
+level = Location.FirstLevel(screen)
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    loc.render(screen)
+    level.render(screen)
     pygame.display.flip()
 pygame.quit()
