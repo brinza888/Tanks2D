@@ -1,9 +1,9 @@
 import pygame
 
 
-class location(pygame.sprite.Sprite):
+class Location(pygame.sprite.Sprite):
     def __init__(self, screen):
-        super(location, self).__init__()
+        super().__init__()
         # Значения по умолчанию
         self.board = []
         self.cell_size = 32
@@ -11,13 +11,16 @@ class location(pygame.sprite.Sprite):
         self.height = 1216 // self.cell_size
         self.all_sprites = pygame.sprite.Group()
         self.screen = screen
+        self.reload_board()
+
+    def reload_board(self):
         for y in range(self.height):
             temp = []
             for x in range(self.width):
                 temp.append(True)
             self.board.append(temp)
 
-    def changeCellSize(self, size):
+    def change_cell_size(self, size):
         self.cell_size = size
         self.width = 1216 // self.cell_size
         self.height = 1216 // self.cell_size
