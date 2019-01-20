@@ -3,17 +3,17 @@ import Location
 
 
 pygame.init()
-size = width, height = 1216, 1216
+size = width, height = 600, 600
 screen = pygame.display.set_mode(size)
 running = True
 
 
-loc = Location.First_lvl(screen)
-loc.render()
-loc.table.draw()
+loc = Location.FirstLevel(screen)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    loc.render(screen)
     pygame.display.flip()
 pygame.quit()

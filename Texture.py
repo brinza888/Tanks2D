@@ -1,8 +1,9 @@
-import pygame
 import os
+import pygame
+
+pygame.display.set_mode()
 
 
-# Функция загрузки изображений
 def load_image(name, color_key=None):
     fullname = os.path.join("data", name)
     try:
@@ -14,5 +15,4 @@ def load_image(name, color_key=None):
             image.set_colorkey(color_key)
         return image
     except pygame.error as message:
-        print('Cannot load image:', name)
-        raise SystemExit(message)
+        print('Cannot load image:', name, message)
