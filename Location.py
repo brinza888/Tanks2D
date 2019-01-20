@@ -24,16 +24,17 @@ class Level:
         self.width = len(self.map[0])
         self.height = len(self.map)
         self.group = pygame.sprite.Group()
-        self.screen = screen
         self.coords = self.x, self.y = x, y
+        self.reload()
+
+    def reload(self):
         for i, row in enumerate(self.map):
             for j, block_id in enumerate(row.split()):
                 bx = self.x + self.cell_size * j
                 by = self.y + self.cell_size * i
-                Blocks.get_by_id(int(block_id))(self.group, bx, by)
+                Blocks.get_by_id(block_id)(self.group, bx, by)
         self.human_coords = [128, 128]
         self.human = Entities.Human(self.group, *self.human_coords)
-
 
     def change_cell_size(self, size):
         self.cell_size = size
@@ -51,7 +52,25 @@ class Level:
 
 
 class FirstLevel(Level):
-    map = ["1 " * (608 // 32) for i in range(0, 608, 32)]
+    map = [[4, 2, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 3],
+           [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 2, 1, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0],
+           [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 2, 0, 2, 2, 0, 2, 0],
+           [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0],
+           [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 1, 0],
+           [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 2, 0, 1, 1, 2, 1, 0],
+           [0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0],
+           [0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0],
+           [0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 1, 0],
+           [0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 1, 2, 0, 0, 0],
+           [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 
 class SecondLevel(Level):
