@@ -43,9 +43,11 @@ class Level:
 
     def get_event(self, event, dx=0, dy=0):
         if event == "Human":
-            self.human_coords[0] += dx
-            self.human_coords[1] += dy
-            self.human.move(*self.human_coords)
+            if 0 <= self.human_coords[0] + dx < 608 \
+                    and 0 <= self.human_coords[1] + dy < 608:
+                self.human_coords[0] += dx
+                self.human_coords[1] += dy
+                self.human.move(*self.human_coords)
 
 
 class FirstLevel(Level):

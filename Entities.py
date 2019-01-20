@@ -23,3 +23,4 @@ class Human(Entity):
 
     def coords(self):
         return self.rect.topleft
+
