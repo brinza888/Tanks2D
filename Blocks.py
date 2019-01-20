@@ -20,6 +20,10 @@ class __Block (pygame.sprite.Sprite):
         pass
 
 
+class Nothing (__Block):
+    Image = Texture.load_image("nothing.png")
+
+
 class Grass (__Block):
     Image = Texture.load_image("grass.png")
 

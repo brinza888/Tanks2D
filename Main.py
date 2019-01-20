@@ -3,12 +3,11 @@ import Location
 
 
 pygame.init()
-size = width, height = 600, 600
+size = width, height = 608, 608
 screen = pygame.display.set_mode(size)
 running = True
 
-
-level = Location.FirstLevel(screen)
+level = Location.FirstLevel()
 
 while running:
     for event in pygame.event.get():
