@@ -22,29 +22,26 @@ class Level:
         self.cell_size = 32
         self.width = len(self.map[0])
         self.height = len(self.map)
-        self.table = [pygame.sprite.Group() for x in range(self.height)]
+        self.group = pygame.sprite.Group()
         self.screen = screen
         self.cords = self.x, self.y = x, y
-        for i, row in enumerate(Level.map):
+        for i, row in enumerate(self.map):
             for j, block_id in enumerate(row.split()):
-                block = Blocks.get_by_id(int(block_id))()
-                block.rect.x = self.x + self.cell_size * j
-                block.rect.y = self.y + self.cell_size * i
-                self.table[i].add(block)
+                bx = self.x + self.cell_size * j
+                by = self.y + self.cell_size * i
+                Blocks.get_by_id(int(block_id))(self.group, bx, by)
 
     def change_cell_size(self, size):
         self.cell_size = size
 
     def render(self, screen):
-        for group in self.table:
-            group.draw(screen)
+        self.group.draw(screen)
 
 
 class FirstLevel(Level):
     map = ["1 1 1 1 1",
-           "1 1 1 1 1",
+           "1 2 1 1 1",
            "1 1 1 1 1"]
-    height, width = len(map), len(map[0])
 
 
 class SecondLevel(Level):

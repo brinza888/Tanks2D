@@ -12,13 +12,11 @@ class __Block (pygame.sprite.Sprite):
         self.rect.x, self.rect.y = x, y
         self.h = h  # Высота подъема блока над землей (0 - можно ходить, 1 - нельзя)
 
-    # Изменение положения блока
-    def move(self, dx, dy):
-        self.rect.x += dx
-        self.rect.y += dy
-
     # Вызывается, когда существо стоит на нём
     def standing(self, entity):
+        pass
+
+    def update(self):
         pass
 
 
@@ -40,7 +38,6 @@ class Stone (__Block):
 
 class Sand (__Block):
     Image = Texture.load_image("sand.png")
-
 
 
 __blocks = []
