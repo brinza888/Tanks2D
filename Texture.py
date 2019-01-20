@@ -2,6 +2,7 @@ import pygame
 import os
 
 
+# Функция загрузки изображений
 def load_image(name, color_key=None):
     fullname = os.path.join("data", name)
     try:

@@ -3,7 +3,7 @@ import pygame
 GRAVITY = 10
 
 
-# Base class for all game entities
+# Базовый класс для всех существ
 class Entity (pygame.sprite.Sprite):
     def __init__(self, x, y, image):
         super().__init__()  # calling Sprite class constructor
