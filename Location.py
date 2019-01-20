@@ -13,29 +13,22 @@ def load_map(file):
     return map
 
 
-class Levels:
-    map = None
-    height, width = None, None
+class Level:
+    map = []
 
-    def __init__(self, screen):
+    def __init__(self, x, y, screen):
         super().__init__()
         # Значения по умолчанию
         self.cell_size = 32
-        self.width = width
-        self.height = height
+        self.width, self.height = len(Level.map[0]), len(Level.map)
+        self.table = [pygame.sprite.Group() for x in range(self.height)]
         self.screen = screen
-
-        self.grass = Blocks.Grass.image
-        self.sand = Blocks.Sand.image
-        self.stone = Blocks.stone.image
-
-
-    def reload_board(self):
-        for y in range(self.height):
-            temp = []
-            for x in range(self.width):
-                temp.append(1)
-            self.board.append(temp)
+        self.cords = self.x, self.y = x, y
+        for i, row in enumerate(Level.map):
+            for j, block_id in enumerate(row.split()):
+                block = Blocks.get_by_id(int(block_id))()
+                block.rect.x, block.rect.y = self.x, self.y
+                self.table[i].add(block)
 
     def change_cell_size(self, size):
         self.cell_size = size
@@ -43,26 +36,16 @@ class Levels:
         self.height = 1216 // self.cell_size
 
     def render(self):
-        for y in range(self.height):
-            for x in range(self.width):
-                coords = (x * self.cell_size, y * self.cell_size,
-                          self.cell_size, self.cell_size)
-
-                if self.board[y][x] == 1:
-                    self.grass.topleft = y, x
-
-                if self.board[y][x] == 2:
-                    self.sand.topleft = y, x
-
-                if self.board[y][x] == 3:
-                    self.stone.topleft = y, x
+        pass
 
 
-class First_lvl(Levels):
-    map = load_map("Map.txt")
+class FirstLevel(Level):
+    map = ["1 1 1 1 1",
+           "1 1 1 1 1",
+           "1 1 1 1 1"]
     height, width = len(map), len(map[0])
 
 
-class Second_lvl(Levels):
+class SecondLevel(Level):
     map = load_map("")
     height, width = len(map), len(map[0])
