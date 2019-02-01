@@ -10,6 +10,7 @@ class BaseEntity(pygame.sprite.Sprite):
     def __init__(self, x, y, group, direction=UP):
         super().__init__(group)
         self.direction = direction
+        self.group = group
         self.image = pygame.transform.rotate(self.EntityImage, 90 * self.direction)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
@@ -70,11 +71,15 @@ class Enemy(BaseEntity):
 class Bullet(BaseEntity):
     EntityImage = load_image("Bullet.png")
 
-    def __init__(self, owner, *args):
-        super().__init__(*args, direction=owner.direction)
+    def __init__(self, owner, x, y):
+        super().__init__(x, y, owner.group, direction=owner.direction)
         self.owner = owner
-        self.speed = 25
+        self.speed = 8
         self.is_moving = True
+
+    def update(self):
+        if not pygame.sprite.collide_rect(self.rect, screen_rect):
+            self.kill()
 
 
 class Fortifying(BaseEntity):
