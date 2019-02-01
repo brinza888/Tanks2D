@@ -1,4 +1,5 @@
 from Tools import *
+from Map import Map
 from Blocks import load_blocks
 from Entity import Player
 
@@ -7,6 +8,17 @@ load_blocks()
 running = True
 logger.write("Game started", logger.ACTION)
 
+
+blocks = pygame.sprite.Group()
+
+load_blocks()
+
+
+board = [[0] * 19, [1] * 19] * 18 + [[0] * 19]
+print(board)
+map = Map(board, blocks)
+map.generate_map()
+# Матрица с картой
 clock = pygame.time.Clock()
 
 entities = pygame.sprite.Group()
@@ -21,6 +33,7 @@ while running:
     screen.fill((0, 0, 0))
     entities.draw(screen)
     entities.update()
+    blocks.draw(screen)
     pygame.display.flip()
     clock.tick(50)
 
