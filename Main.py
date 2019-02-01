@@ -31,9 +31,9 @@ while running:
             running = False
             logger.write("Game quited", logger.ACTION)
     screen.fill((0, 0, 0))
+    blocks.draw(screen)
     entities.draw(screen)
     entities.update()
-    blocks.draw(screen)
     pygame.display.flip()
     clock.tick(50)
 
