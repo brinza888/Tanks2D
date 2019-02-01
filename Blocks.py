@@ -1,63 +1,19 @@
-import pygame
-import Texture
+from Tools import *
 
 
-class __Block (pygame.sprite.Sprite):
-    Image = None
+class BaseBlock(pygame.sprite.Sprite):
+    BlockImage = load_image("NoneTexture.png")
 
-    def __init__(self, group, x, y, h=0):
+    def __init__(self, x, y, group):
         super().__init__(group)
-        self.image = self.__class__.Image
+        self.image = self.BlockImage
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
-        self.h = h  # Высота подъема блока над землей (0 - можно ходить, 1 - нельзя)
-
-    # Вызывается, когда существо стоит на нём
-    def standing(self, entity):
-        pass
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self):
         pass
 
-    def on_event(self, event):
-        pass
 
-
-class Nothing (__Block):
-    Image = Texture.load_image("nothing.png")
-
-
-class Grass (__Block):
-    Image = Texture.load_image("grass.png")
-
-
-class Grass2 (__Block):
-    Image = Texture.load_image("grass2.png")
-
-
-class Grass3 (__Block):
-    Image = Texture.load_image("grass3.png")
-
-
-class Stone (__Block):
-    Image = Texture.load_image("stone.png")
-
-
-class Sand (__Block):
-    Image = Texture.load_image("sand.png")
-
-
-__blocks = []
-for cls in __Block.__subclasses__():
-    __blocks.append(cls)
-
-
-def get_blocks():
-    return __blocks.copy()
-
-
-def get_by_id(id):
-    try:
-        return __blocks[id]
-    except IndexError as er:
-        print("get_by_id error:", er)
+class Bricks(BaseBlock):
+    BlockImage = load_image("Bricks64.png")
