@@ -20,8 +20,13 @@ class Air(BaseBlock):
     pass
 
 
+class Border_Block():
+    BlockImage = load_image("EnemyTank.png")
+
+
 class Bricks(BaseBlock):
     BlockImage = load_image("Bricks.png")
+
 
 
 __blocks = []

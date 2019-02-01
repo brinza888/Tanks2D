@@ -23,7 +23,9 @@ class BaseEntity(pygame.sprite.Sprite):
         if self.is_moving:
             dx = cos(radians(90 * self.direction)) * self.speed
             dy = - (sin(radians(90 * self.direction)) * self.speed)
-            self.rect = self.rect.move(dx, dy)
+            x, y = self.rect.topleft
+            if 32 < x + dx < 544 and 32 < y + dy < 544:
+                self.rect = self.rect.move(dx, dy)
 
     def get_event(self, event):
         pass
