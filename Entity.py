@@ -22,8 +22,8 @@ class BaseEntity(pygame.sprite.Sprite):
     def update(self):
         if self.is_moving:
             dx = cos(radians(90 * self.direction)) * self.speed
-            dy = sin(radians(90 * self.direction)) * self.speed
-            self.rect.move(dx, dy)
+            dy = - (sin(radians(90 * self.direction)) * self.speed)
+            self.rect = self.rect.move(dx, dy)
 
     def get_event(self, event):
         pass
@@ -41,7 +41,7 @@ class Player(BaseEntity):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.speed = 10
+        self.speed = 3
 
     def shoot(self):
         Bullet(self, self.rect.x, self.rect.y)
@@ -71,14 +71,14 @@ class Bullet(BaseEntity):
     EntityImage = load_image("Bullet.png")
 
     def __init__(self, owner, *args):
-        super().__init__(*args, direction=owner.facing)
+        super().__init__(*args, direction=owner.direction)
         self.owner = owner
         self.speed = 25
         self.is_moving = True
 
 
 class Fortifying(BaseEntity):
-    EntityImage = load_image("Fortifying64.png")
+    EntityImage = load_image("Fortifying.png")
 
     def __init__(self, team, *args):
         super().__init__(*args)

@@ -7,6 +7,8 @@ pygame.init()
 size = width, height = 608, 608
 screen = pygame.display.set_mode(size)
 
+screen_rect = pygame.Rect(0, 0, width, height)
+
 logger = Logger()
 
 
