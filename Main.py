@@ -1,5 +1,5 @@
 from Tools import *
-import Map
+from Map import Map
 from Blocks import load_blocks
 
 running = True
@@ -11,7 +11,10 @@ blocks = pygame.sprite.Group()
 load_blocks()
 
 
-map = Map()
+board = [[0] * 19, [1] * 19] * 18 + [[0] * 19]
+print(board)
+map = Map(board, blocks)
+map.generate_map()
 # Матрица с картой
 while running:
     for event in pygame.event.get():
@@ -19,6 +22,7 @@ while running:
             running = False
             logger.write("Game quited", logger.ACTION)
     screen.fill((0, 0, 0))
+    blocks.draw(screen)
     pygame.display.flip()
 
 pygame.quit()

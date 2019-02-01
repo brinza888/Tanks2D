@@ -31,6 +31,7 @@ __blocks = []
 def load_blocks():
     for cls in BaseBlock.__subclasses__():
         __blocks.append(cls)
+    print(__blocks)
 
 
 # Возвращает класс блока по ID
