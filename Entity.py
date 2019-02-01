@@ -48,19 +48,19 @@ class Player(BaseEntity):
         Bullet(self, self.rect.x, self.rect.y)
 
     def get_event(self, event):
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+        self.is_moving = True
+        key = pygame.key.get_pressed()
+        if key[pygame.K_SPACE]:
             self.shoot()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                self.set_direction(self.UP)
-            elif event.key == pygame.K_s:
-                self.set_direction(self.DOWN)
-            elif event.key == pygame.K_d:
-                self.set_direction(self.RIGHT)
-            elif event.key == pygame.K_a:
-                self.set_direction(self.LEFT)
-            self.is_moving = True
-        elif event.type == pygame.KEYUP:
+        elif key[pygame.K_w]:
+            self.set_direction(self.UP)
+        elif key[pygame.K_s]:
+            self.set_direction(self.DOWN)
+        elif key[pygame.K_d]:
+            self.set_direction(self.RIGHT)
+        elif key[pygame.K_a]:
+            self.set_direction(self.LEFT)
+        else:
             self.is_moving = False
 
 
