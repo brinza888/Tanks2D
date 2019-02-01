@@ -15,18 +15,24 @@ class BaseBlock(pygame.sprite.Sprite):
     def update(self):
         pass
 
+    def get_event(self, event):
+        pass
+
 
 class Air(BaseBlock):
+    BlockImage = load_image("Air.png")
+
+
+class BorderBlock(BaseBlock):
     pass
 
 
-class Border_Block():
-    BlockImage = load_image("EnemyTank.png")
+class SpawnPoint(BaseBlock):
+    BlockImage = load_image("Air.png")
 
 
 class Bricks(BaseBlock):
     BlockImage = load_image("Bricks.png")
-
 
 
 __blocks = []
@@ -36,7 +42,6 @@ __blocks = []
 def load_blocks():
     for cls in BaseBlock.__subclasses__():
         __blocks.append(cls)
-    print(__blocks)
 
 
 # Возвращает класс блока по ID
