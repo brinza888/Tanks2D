@@ -4,7 +4,7 @@ from Logging import Logger
 
 
 pygame.init()
-size = width, height = 600, 600
+size = width, height = 608, 608
 screen = pygame.display.set_mode(size)
 
 logger = Logger()
@@ -21,4 +21,4 @@ def load_image(name, color_key=None):
             image.set_colorkey(color_key)
         return image
     except pygame.error as ex:
-        logger.write(ex, logger.ERROR)
+        logger.write("Can't load image " + name, logger.ERROR)
