@@ -1,9 +1,14 @@
 from Tools import *
-
+import Map
 
 running = True
-logger.log("Game started", logger.ACTION)
+logger.write("Game started", logger.ACTION)
 
+
+blocks = pygame.sprite.Group()
+
+map = Map()
+# Матрица с картой
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
