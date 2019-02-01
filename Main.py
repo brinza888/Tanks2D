@@ -1,8 +1,10 @@
 from Tools import *
+from Blocks import load_blocks
 
+load_blocks()
 
 running = True
-logger.log("Game started", logger.ACTION)
+logger.write("Game started", logger.ACTION)
 
 while running:
     for event in pygame.event.get():
@@ -13,4 +15,4 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
-logger.write("Game exit", logger.ACTION)
+logger.write("Game exited", logger.ACTION)

@@ -11,6 +11,8 @@ class Logger:
 
     def __init__(self, log_file="log.txt"):
         self.file = log_file
+        with open(self.file, "w") as f:
+            f.write("Log started")
 
     def write(self, registry, reg_type):
         with open(self.file, "a+") as f:
