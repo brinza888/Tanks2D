@@ -6,12 +6,13 @@ class BaseEntity(pygame.sprite.Sprite):
     EntityImage = load_image("NoneTexture.png")
 
     RIGHT, UP, LEFT, DOWN = 0, 1, 2, 3
+    ANGLE = 90
 
     def __init__(self, x, y, group, direction=UP):
         super().__init__(group)
         self.direction = direction
         self.group = group
-        self.image = pygame.transform.rotate(self.EntityImage, 90 * self.direction)
+        self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
         self.mask = pygame.mask.from_surface(self.image)
@@ -22,17 +23,17 @@ class BaseEntity(pygame.sprite.Sprite):
 
     def update(self):
         if self.is_moving:
-            dx = cos(radians(90 * self.direction)) * self.speed
-            dy = - (sin(radians(90 * self.direction)) * self.speed)
+            dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed
+            dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)
             self.rect = self.rect.move(dx, dy)
 
     def get_event(self, event):
         pass
 
-    def set_direction(self, facing):
+    def set_direction(self, direction):
         x, y = self.rect.x, self.rect.y
-        self.direction = facing
-        self.image = pygame.transform.rotate(self.EntityImage, 90 * self.direction)
+        self.direction = direction
+        self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
 
