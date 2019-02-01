@@ -1,11 +1,15 @@
 from Tools import *
 import Map
+from Blocks import load_blocks
 
 running = True
 logger.write("Game started", logger.ACTION)
 
 
 blocks = pygame.sprite.Group()
+
+load_blocks()
+
 
 map = Map()
 # Матрица с картой
@@ -18,4 +22,4 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
-logger.write("Game exit", logger.ACTION)
+logger.write("Game exited", logger.ACTION)
