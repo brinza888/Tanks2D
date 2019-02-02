@@ -5,7 +5,7 @@ from Blocks import load_blocks
 
 load_blocks()
 
-board = [[2] + [0] * 18] + [[0] * 19] * 18
+board = [[2] + [0] * 18] + [[0] * 7 + [3] * 5 + [0] * 7] + [[0] * 19] * 17
 
 level = Map(board)
 level.generate_map()

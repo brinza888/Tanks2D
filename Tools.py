@@ -5,11 +5,12 @@ from Logging import Logger
 
 pygame.init()
 size = width, height = 608, 608
-screen = pygame.display.set_mode(size)
-
 screen_rect = pygame.Rect(0, 0, width, height)
 
-logger = Logger()
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("Tanks 2D")
+
+logger = Logger()  # Логирование ошибок в текстовик
 
 
 def load_image(name, color_key=None):

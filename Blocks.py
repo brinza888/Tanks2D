@@ -3,14 +3,17 @@ from Tools import *
 
 # Базовый класс для всех блоков
 class BaseBlock(pygame.sprite.Sprite):
-    BlockImage = load_image("NoneTexture.png")
+    UP, DOWN = 0, 1  # Константы слоев
+
+    BlockImage = load_image("NoneTexture.png")  # Стандартная текстура
+    Layer = UP  # Слой отрисовки
+    Solid = True  # Твердость
 
     def __init__(self, x, y, group):
         super().__init__(group)
         self.image = self.BlockImage
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
-        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self):
         pass
@@ -21,14 +24,18 @@ class BaseBlock(pygame.sprite.Sprite):
 
 class Air(BaseBlock):
     BlockImage = load_image("Air.png")
+    Layer = BaseBlock.DOWN
+    Solid = False
 
 
-class BorderBlock(BaseBlock):
-    pass
+class Barrier(BaseBlock):
+    BlockImage = load_image("Barrier.png")
 
 
-class SpawnPoint(BaseBlock):
+class PlayerSpawn(BaseBlock):  # Точка возрождения игрока
     BlockImage = load_image("Air.png")
+    Layer = BaseBlock.DOWN
+    Solid = False
 
 
 class Bricks(BaseBlock):
@@ -38,13 +45,13 @@ class Bricks(BaseBlock):
 __blocks = []
 
 
-# Поиск существующих блоков
+# Поиск и загрузка существующих блоков (от класса BaseBlock)
 def load_blocks():
     for cls in BaseBlock.__subclasses__():
         __blocks.append(cls)
 
 
-# Возвращает класс блока по ID
+# Возвращает класс блока по данному ID
 def get_block_by_id(id):
     try:
         return __blocks[id]
