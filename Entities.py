@@ -88,7 +88,3 @@ class Bullet(BaseEntity):  # Снаряд
 
     def update(self, solid_blocks, entities):
         pass
-
-
-class Fortifying(BaseEntity):  # Существо, описывающее базу (для победы надо уничтожить)
-    EntityImage = load_image("Fortifying.png")
