@@ -16,18 +16,18 @@ class Map:
         self.cells = width // self.cell_size
 
     def generate_map(self):
-        for row in range(self.rows):
-            for cell in range(self.cells):
-                block = get_block_by_id(self.board[row][cell])
+        for i in range(self.rows):
+            for j in range(self.cells):
+                block = get_block_by_id(self.board[j][i])
                 if block.Layer == BaseBlock.UP:
-                    b = block(row * self.cell_size, cell * self.cell_size, self.up_blocks)
+                    b = block(i * self.cell_size, j * self.cell_size, self.up_blocks)
                 else:
-                    b = block(row * self.cell_size, cell * self.cell_size, self.down_blocks)
+                    b = block(i * self.cell_size, j * self.cell_size, self.down_blocks)
                 if b.Solid:
                     self.solid_blocks.add(b)
 
                 if block is PlayerSpawn:
-                    Player(row * self.cell_size, cell * self.cell_size, self.entities)
+                    Player(i * self.cell_size, j * self.cell_size, self.entities)
 
     def draw(self, _screen):
         self.down_blocks.draw(_screen)

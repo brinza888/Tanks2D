@@ -42,6 +42,10 @@ class Bricks(BaseBlock):
     BlockImage = load_image("Bricks.png")
 
 
+class Stone(BaseBlock):
+    BlockImage = load_image("Stone.png")
+
+
 __blocks = []
 
 

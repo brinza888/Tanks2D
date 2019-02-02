@@ -3,6 +3,7 @@ from Tools import *
 try:
     from Map import Map
     from Blocks import load_blocks
+    from MapList import *
 except Exception as ex:
     logger.write("Fatal error in import: {}".format(ex), logger.ERROR)
     logger.write("Game interrupted because fatal error".format(ex), logger.INFO)
@@ -11,7 +12,7 @@ except Exception as ex:
 
 load_blocks()
 
-board = [[2] + [0] * 18] + [[0] * 7 + [3] * 5 + [0] * 7] + [[0] * 19] * 17
+board = map1
 
 try:
     level = Map(board)

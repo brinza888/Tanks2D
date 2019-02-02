@@ -20,23 +20,14 @@ class BaseEntity(pygame.sprite.Sprite):
         self.hp = 100  # Очки прочности
         self.speed = 0  # Максимальная скорость
         self.is_moving = False  # Движение танка
-        self.forbidden = None
 
     def update(self, solid_blocks, entities):
-        collision = pygame.sprite.spritecollideany(self, entities) not in (None, self) or \
-                    pygame.sprite.spritecollideany(self, solid_blocks) is not None
-        if collision:
-            if self.forbidden is None:
-                self.forbidden = self.direction
-            if self.direction == self.forbidden:
-                self.is_moving = False
-        else:
-            self.forbidden = None
-
-        if self.is_moving and self.direction != self.forbidden:
+        if self.is_moving:
             dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed  # Расчет проекции на Ox
             dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)  # Расчет проекции на Oy
             self.rect = self.rect.move(dx, dy)
+        if not pygame.Rect.colliderect(self.rect, screen_rect):
+            self.kill()
 
     def get_event(self, event):
         pass
@@ -52,6 +43,19 @@ class Player(BaseEntity):  # Игрок
     def __init__(self, *args):
         super().__init__(*args)
         self.speed = 3
+        self.forbidden = None
+
+    def update(self, solid_blocks, entities):
+        collision = pygame.sprite.spritecollideany(self, entities) not in (None, self) or \
+                    pygame.sprite.spritecollideany(self, solid_blocks) is not None
+        if collision:
+            if self.forbidden is None:
+                self.forbidden = self.direction
+            if self.direction == self.forbidden:
+                self.is_moving = False
+        else:
+            self.forbidden = None
+        super().update(solid_blocks, entities)
 
     def shoot(self):  # Стрельба
         Bullet(self, self.rect.x, self.rect.y)
@@ -61,7 +65,7 @@ class Player(BaseEntity):  # Игрок
         key = pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
             self.shoot()
-        elif key[pygame.K_w]:
+        if key[pygame.K_w]:
             self.set_direction(self.UP)
         elif key[pygame.K_s]:
             self.set_direction(self.DOWN)
@@ -87,4 +91,4 @@ class Bullet(BaseEntity):  # Снаряд
         self.is_moving = True
 
     def update(self, solid_blocks, entities):
-        pass
+        super().update(solid_blocks, entities)
