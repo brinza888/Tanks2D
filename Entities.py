@@ -49,6 +49,7 @@ class Player(BaseEntity):  # Игрок
     def __init__(self, *args):
         super().__init__(*args)
         self.speed = 3
+        self.hp = 3
         self.forbidden = None
 
     def update(self, solid_blocks, entities):
@@ -64,13 +65,16 @@ class Player(BaseEntity):  # Игрок
         Bullet(self, x, y)
 
     def get_event(self, event):
-        pass
+        if self.hp < 0:
+            self.kill()
+            return
 
 
 class FirstPlayer(Player):
     EntityImage = load_image("FirstPlayerTank.png")
 
     def get_event(self, event):  # Обработка событий
+        super(FirstPlayer, self).get_event(event)
         key = pygame.key.get_pressed()
         # Стрельба
         if key[pygame.K_SPACE]:
@@ -93,6 +97,7 @@ class SecondPlayer(Player):  # Противник
     EntityImage = load_image("SecondPlayerTank.png")
 
     def get_event(self, event):  # Обработка событий
+        super(SecondPlayer, self).get_event(event)
         key = pygame.key.get_pressed()
         # Стрельба
         if key[pygame.K_SPACE]:
