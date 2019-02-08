@@ -13,13 +13,13 @@ class BaseEntity(pygame.sprite.Sprite):
         self.direction = direction  # Установка направления
         self.group = group
 
-        self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = x, y
-
         self.hp = 100  # Очки прочности
         self.speed = 0  # Максимальная скорость
         self.is_moving = False  # Движение танка
+
+        self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = x, y
 
     def update(self, solid_blocks, entities):
         if self.is_moving:
@@ -33,38 +33,41 @@ class BaseEntity(pygame.sprite.Sprite):
         pass
 
     def set_direction(self, direction):  # Смена направления
+        x, y = self.rect.x, self.rect.y
         self.direction = direction
         self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = x, y
 
 
 class Player(BaseEntity):  # Игрок
     EntityImage = load_image("PlayerTank.png")
+    RELOAD_EVENT = 30
 
     def __init__(self, *args):
         super().__init__(*args)
         self.speed = 3
+        self.reloading = False
         self.forbidden = None
 
     def update(self, solid_blocks, entities):
-        collision = pygame.sprite.spritecollideany(self, entities) not in (None, self) or \
-                    pygame.sprite.spritecollideany(self, solid_blocks) is not None
-        if collision:
-            if self.forbidden is None:
-                self.forbidden = self.direction
-            if self.direction == self.forbidden:
-                self.is_moving = False
-        else:
-            self.forbidden = None
         super().update(solid_blocks, entities)
 
     def shoot(self):  # Стрельба
-        Bullet(self, self.rect.x, self.rect.y)
+        if not self.reloading:
+            Bullet(self, self.rect.x, self.rect.y)
+            pygame.time.set_timer(Player.RELOAD_EVENT, 2000)
+            self.reloading = True
 
     def get_event(self, event):  # Обработка событий
-        self.is_moving = True
+        if event.type == Player.RELOAD_EVENT:
+            self.reloading = False
+            pygame.time.set_timer(Player.RELOAD_EVENT, 0)
         key = pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
             self.shoot()
+        # Движение
+        self.is_moving = True
         if key[pygame.K_w]:
             self.set_direction(self.UP)
         elif key[pygame.K_s]:

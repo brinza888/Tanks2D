@@ -8,15 +8,18 @@ class BaseBlock(pygame.sprite.Sprite):
     BlockImage = load_image("NoneTexture.png")  # Стандартная текстура
     Layer = UP  # Слой отрисовки
     Solid = True  # Твердость
+    DefaultHp = 10  # Начальные очки прочности
 
     def __init__(self, x, y, group):
         super().__init__(group)
         self.image = self.BlockImage
+        self.hp = self.DefaultHp
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
 
     def update(self):
-        pass
+        if self.hp <= 0:
+            self.kill()
 
     def get_event(self, event):
         pass
@@ -32,7 +35,13 @@ class Barrier(BaseBlock):
     BlockImage = load_image("Barrier.png")
 
 
-class PlayerSpawn(BaseBlock):  # Точка возрождения игрока
+class FirstPlayerSpawn(BaseBlock):  # Точка возрождения 1 игрока
+    BlockImage = load_image("Air.png")
+    Layer = BaseBlock.DOWN
+    Solid = False
+
+
+class SecondPlayerSpawn(BaseBlock):  # Точка возрождения 2 игрока
     BlockImage = load_image("Air.png")
     Layer = BaseBlock.DOWN
     Solid = False

@@ -25,8 +25,7 @@ class Map:
                     b = block(i * self.cell_size, j * self.cell_size, self.down_blocks)
                 if b.Solid:
                     self.solid_blocks.add(b)
-
-                if block is PlayerSpawn:
+                if block is FirstPlayerSpawn:
                     Player(i * self.cell_size, j * self.cell_size, self.entities)
 
     def draw(self, _screen):
