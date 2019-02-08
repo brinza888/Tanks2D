@@ -1,6 +1,6 @@
 from Tools import *
 from Blocks import *
-from Entities import Player
+from Entities import FirstPlayer, SecondPlayer
 
 
 class Map:
@@ -26,7 +26,10 @@ class Map:
                 if b.Solid:
                     self.solid_blocks.add(b)
                 if block is FirstPlayerSpawn:
-                    Player(i * self.cell_size, j * self.cell_size, self.entities)
+                    FirstPlayer(i * self.cell_size, j * self.cell_size, self.entities)
+                if block is SecondPlayerSpawn:
+                    SecondPlayer(i * self.cell_size, j * self.cell_size, self.entities)
+
 
     def draw(self, _screen):
         self.down_blocks.draw(_screen)

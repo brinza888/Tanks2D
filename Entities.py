@@ -60,6 +60,10 @@ class Player(BaseEntity):  # Игрок
 
         Bullet(self, x, y)
 
+
+class FirstPlayer(Player):
+    EntityImage = load_image("PlayerTank.png")
+
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
         # Стрельба
@@ -79,8 +83,26 @@ class Player(BaseEntity):  # Игрок
             self.is_moving = False
 
 
-class Enemy(BaseEntity):  # Противник
+class SecondPlayer(Player):  # Противник
     EntityImage = load_image("EnemyTank.png")
+
+    def get_event(self, event):  # Обработка событий
+        key = pygame.key.get_pressed()
+        # Стрельба
+        if key[pygame.K_SPACE]:
+            self.shoot(self.direction)
+        # Движение танка
+        self.is_moving = True
+        if key[pygame.K_UP]:
+            self.set_direction(self.UP)
+        elif key[pygame.K_DOWN]:
+            self.set_direction(self.DOWN)
+        elif key[pygame.K_RIGHT]:
+            self.set_direction(self.RIGHT)
+        elif key[pygame.K_LEFT]:
+            self.set_direction(self.LEFT)
+        else:
+            self.is_moving = False
 
 
 class Bullet(BaseEntity):  # Снаряд
