@@ -1,8 +1,8 @@
 from Tools import *
-from math import sin, cos, radians
+from math import *
 
 
-class BaseEntity(pygame.sprite.Sprite):
+class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
     RIGHT, UP, LEFT, DOWN = 0, 1, 2, 3  # Константы направления
     ANGLE = 90  # Угол поворота
 
@@ -43,15 +43,19 @@ class BaseEntity(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = x, y
 
 
-class Player(BaseEntity):  # Игрок
-    EntityImage = None
+class Player(BaseEntity):  # Базовый игрок
+    EntityImage = load_image("NoneTexture.png")
 
     def __init__(self, *args):
         super().__init__(*args)
         self.speed = 3
-        self.forbidden = None
+        self.forbidden = []
+        self.center = self.rect.x + self.rect.width, self.rect.y + self.rect.height
 
     def update(self, solid_blocks, entities):
+        for block in pygame.sprite.spritecollide(self, solid_blocks, dokill=False):
+            if self.center[0] < block.center[0]:
+                pass
         super().update(solid_blocks, entities)
 
     def shoot(self, direction):  # Стрельба
@@ -62,9 +66,6 @@ class Player(BaseEntity):  # Игрок
             x += 15
 
         Bullet(self, x, y)
-
-    def get_event(self, event):
-        pass
 
 
 class FirstPlayer(Player):

@@ -1,14 +1,14 @@
 from Tools import *
 from Map import Map
 from Blocks import load_blocks
-from MapList import *
+from MapList import get_map_wrapper
 from Menu import menu
 
 
 def game():
     load_blocks()
 
-    board = map1
+    board = get_map_wrapper(0).Map
 
     try:
         level = Map(board)
