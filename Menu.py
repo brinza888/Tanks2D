@@ -11,7 +11,7 @@ class Button(pygame.sprite.Sprite):
         self.rect = pygame.Rect((self.x, self.y, self.w, self.h))
 
     def update(self, event):
-        return self.rect.collidepoint(event.pos)
+        return self.rect.collidepoint(*event.pos)
 
 
 def text(text):
