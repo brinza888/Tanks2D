@@ -10,6 +10,7 @@ class BaseEntity(pygame.sprite.Sprite):
 
     def __init__(self, x, y, group, direction=UP):
         super().__init__(group)
+        self.ImageList = [pygame.transform.rotate(self.EntityImage, 90 * i) for i in range(4)]
         self.direction = direction  # Установка направления
         self.group = group
 
@@ -17,11 +18,12 @@ class BaseEntity(pygame.sprite.Sprite):
         self.speed = 0  # Максимальная скорость
         self.is_moving = False  # Движение танка
 
-        self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
+        self.image = self.ImageList[self.direction]
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
 
     def update(self, solid_blocks, entities):
+        pygame.draw.rect(screen, (255, 0, 0), self.rect, 1)
         if self.is_moving:
             dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed  # Расчет проекции на Ox
             dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)  # Расчет проекции на Oy
@@ -33,6 +35,7 @@ class BaseEntity(pygame.sprite.Sprite):
         pass
 
     def set_direction(self, direction):  # Смена направления
+        self.image = self.ImageList[direction]
         x, y = self.rect.x, self.rect.y
         self.direction = direction
         self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
