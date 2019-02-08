@@ -1,26 +1,23 @@
 from Tools import *
 
 
-buttons = pygame.sprite.Group()
-
-
 class Button(pygame.sprite.Sprite):
-    def __init__(self, x, y, w=400, h=100):
-        super(Button, self).__init__(buttons)
+    def __init__(self, x, y, group, w=400, h=100):
+        super(Button, self).__init__(group)
         self.x, self.y = x, y
         self.image = pygame.Surface((w, h), pygame.SRCALPHA, 32)
         pygame.draw.rect(self.image, pygame.Color("Gray"), (0, 0, w, h))
         self.rect = pygame.Rect((self.x, self.y, w, h))
 
     def update(self, event):
-        return self.rect.collidepoint(event.pos)
-
-
-start_game = Button(100, 100)
-make_level = Button(100, 400)
+        return self.rect.collidepoint(*event.pos)
 
 
 def menu():
+    buttons = pygame.sprite.Group()
+    start_game = Button(100, 100, buttons)
+    make_level = Button(100, 400, buttons)
+
     fon = pygame.transform.scale(load_image('NoneTexture.png'), (width, height))
     screen.blit(fon, (0, 0))
     font = pygame.font.Font(None, 30)
@@ -38,16 +35,15 @@ def menu():
     intro_rect.x = 150
     make_level.image.blit(string_rendered, intro_rect)
 
-    while True:
+    running = True
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate()
+                running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_game.update(event):
                     return
                 if make_level.update(event):
                     pass
-
-
         buttons.draw(screen)
         pygame.display.flip()

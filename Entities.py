@@ -61,10 +61,12 @@ class Player(BaseEntity):  # Игрок
         Bullet(self, x, y)
 
     def get_event(self, event):  # Обработка событий
-        self.is_moving = True
         key = pygame.key.get_pressed()
+        # Стрельба
         if key[pygame.K_SPACE]:
             self.shoot(self.direction)
+        # Движение танка
+        self.is_moving = True
         if key[pygame.K_w]:
             self.set_direction(self.UP)
         elif key[pygame.K_s]:
