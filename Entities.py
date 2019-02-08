@@ -57,14 +57,20 @@ class Player(BaseEntity):  # Игрок
             self.forbidden = None
         super().update(solid_blocks, entities)
 
-    def shoot(self):  # Стрельба
-        Bullet(self, self.rect.x, self.rect.y)
+    def shoot(self, direction):  # Стрельба
+        x, y = self.rect.x, self.rect.y
+        if direction == 0 or direction == 2:
+            y += 15
+        elif direction == 1 or direction == 3:
+            x += 15
+
+        Bullet(self, x, y)
 
     def get_event(self, event):  # Обработка событий
         self.is_moving = True
         key = pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
-            self.shoot()
+            self.shoot(self.direction)
         if key[pygame.K_w]:
             self.set_direction(self.UP)
         elif key[pygame.K_s]:
