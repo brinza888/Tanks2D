@@ -67,6 +67,9 @@ class Player(BaseEntity):  # Базовый игрок
 
         Bullet(self, x, y)
 
+    def get_event(self, event):
+        pass
+
 
 class FirstPlayer(Player):
     EntityImage = load_image("FirstPlayerTank.png")
