@@ -40,7 +40,7 @@ class BaseEntity(pygame.sprite.Sprite):
 
 
 class Player(BaseEntity):  # Игрок
-    EntityImage = load_image("FirstPlayerTank.png")
+    EntityImage = None
 
     def __init__(self, *args):
         super().__init__(*args)
