@@ -6,11 +6,10 @@ class BaseEntity(pygame.sprite.Sprite):
     RIGHT, UP, LEFT, DOWN = 0, 1, 2, 3  # Константы направления
     ANGLE = 90  # Угол поворота
 
-    EntityImage = load_image("NoneTexture.png")
+    EntityImage = load_image("NoneTexture.png")  # Стандартная текстура
 
     def __init__(self, x, y, group, direction=UP):
         super().__init__(group)
-        self.ImageList = [pygame.transform.rotate(self.EntityImage, 90 * i) for i in range(4)]
         self.direction = direction  # Установка направления
         self.group = group
 
@@ -18,12 +17,11 @@ class BaseEntity(pygame.sprite.Sprite):
         self.speed = 0  # Максимальная скорость
         self.is_moving = False  # Движение танка
 
-        self.image = self.ImageList[self.direction]
+        self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
 
     def update(self, solid_blocks, entities):
-        pygame.draw.rect(screen, (255, 0, 0), self.rect, 1)
         if self.is_moving:
             dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed  # Расчет проекции на Ox
             dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)  # Расчет проекции на Oy
@@ -35,8 +33,11 @@ class BaseEntity(pygame.sprite.Sprite):
         pass
 
     def set_direction(self, direction):  # Смена направления
-        self.image = self.ImageList[direction]
+        x, y = self.rect.x, self.rect.y
         self.direction = direction
+        self.image = pygame.transform.rotate(self.EntityImage, BaseEntity.ANGLE * self.direction)
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = x, y
 
 
 class Player(BaseEntity):  # Игрок
@@ -59,9 +60,12 @@ class Player(BaseEntity):  # Игрок
 
         Bullet(self, x, y)
 
+    def get_event(self, event):
+        pass
+
 
 class FirstPlayer(Player):
-    EntityImage = load_image("PlayerTank.png")
+    EntityImage = load_image("FirstPlayerTank.png")
 
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
@@ -83,7 +87,7 @@ class FirstPlayer(Player):
 
 
 class SecondPlayer(Player):  # Противник
-    EntityImage = load_image("EnemyTank.png")
+    EntityImage = load_image("SecondPlayerTank.png")
 
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()

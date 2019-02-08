@@ -30,7 +30,6 @@ class Map:
                 if block is SecondPlayerSpawn:
                     SecondPlayer(i * self.cell_size, j * self.cell_size, self.entities)
 
-
     def draw(self, _screen):
         self.down_blocks.draw(_screen)
         self.entities.draw(_screen)
