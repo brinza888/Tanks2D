@@ -42,32 +42,29 @@ class BaseEntity(pygame.sprite.Sprite):
 
 class Player(BaseEntity):  # Игрок
     EntityImage = load_image("PlayerTank.png")
-    RELOAD_EVENT = 30
 
     def __init__(self, *args):
         super().__init__(*args)
         self.speed = 3
-        self.reloading = False
         self.forbidden = None
 
     def update(self, solid_blocks, entities):
         super().update(solid_blocks, entities)
 
-    def shoot(self):  # Стрельба
-        if not self.reloading:
-            Bullet(self, self.rect.x, self.rect.y)
-            pygame.time.set_timer(Player.RELOAD_EVENT, 2000)
-            self.reloading = True
+    def shoot(self, direction):  # Стрельба
+        x, y = self.rect.x, self.rect.y
+        if direction == 0 or direction == 2:
+            y += 15
+        elif direction == 1 or direction == 3:
+            x += 15
+
+        Bullet(self, x, y)
 
     def get_event(self, event):  # Обработка событий
-        if event.type == Player.RELOAD_EVENT:
-            self.reloading = False
-            pygame.time.set_timer(Player.RELOAD_EVENT, 0)
+        self.is_moving = True
         key = pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
-            self.shoot()
-        # Движение
-        self.is_moving = True
+            self.shoot(self.direction)
         if key[pygame.K_w]:
             self.set_direction(self.UP)
         elif key[pygame.K_s]:

@@ -2,33 +2,47 @@ from Tools import *
 from Map import Map
 from Blocks import load_blocks
 from MapList import *
+from Menu import menu
 
 
-load_blocks()
+def game():
+    load_blocks()
 
-board = map1
+    board = map1
 
-level = Map(board)
-level.generate_map()
+    try:
+        level = Map(board)
+        level.generate_map()
+    except Exception as ex:
+        logger.write("Level generation fatal error: {}".format(ex), logger.ERROR)
+        logger.write("Game interrupted because fatal error".format(ex), logger.INFO)
+        exit(0)
 
-clock = pygame.time.Clock()
+    clock = pygame.time.Clock()
 
-running = True
-logger.write("Game started", logger.INFO)
+    running = True
+    logger.write("Game started", logger.INFO)
 
-while running:
-    for event in pygame.event.get():
-        level.get_event(event)
-        if event.type == pygame.QUIT:
-            running = False
-            logger.write("User closed game window", logger.ACTION)
+    while running:
+        try:
+            for event in pygame.event.get():
+                level.get_event(event)
+                if event.type == pygame.QUIT:
+                    running = False
+                    logger.write("User closed game window", logger.ACTION)
 
-    screen.fill((0, 0, 0))
-    level.draw(screen)
-    level.update()
+            screen.fill((0, 0, 0))
+            level.draw(screen)
+            level.update()
 
-    pygame.display.flip()
-    clock.tick(50)
+            pygame.display.flip()
+            clock.tick(50)
+        except Exception as ex:
+            logger.write("Exception in game: {}".format(ex), logger.ERROR)
 
-pygame.quit()
-logger.write("Game quited", logger.INFO)
+    pygame.quit()
+    logger.write("Game quited", logger.INFO)
+
+
+menu()
+game()
