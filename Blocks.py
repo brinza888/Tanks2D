@@ -9,6 +9,7 @@ class BaseBlock(pygame.sprite.Sprite):
     Layer = UP  # Слой отрисовки
     Solid = True  # Твердость
     DefaultHp = 10  # Начальные очки прочности
+    Indestructible = False
 
     def __init__(self, x, y, group):
         super().__init__(group)
@@ -18,13 +19,11 @@ class BaseBlock(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = x, y
 
     def update(self):
-        if self.hp == 0:
+        if self.hp <= 0:
             self.kill()
 
     def get_damage(self, damage):
-        if damage > self.hp:
-            self.hp = 0
-        else:
+        if not self.Indestructible:
             self.hp -= damage
 
     def get_event(self, event):
@@ -39,6 +38,7 @@ class Air(BaseBlock):
 
 class Barrier(BaseBlock):
     BlockImage = load_image("Barrier.png")
+    Indestructible = True
 
 
 class FirstPlayerSpawn(BaseBlock):  # Точка возрождения 1 игрока
@@ -55,10 +55,18 @@ class SecondPlayerSpawn(BaseBlock):  # Точка возрождения 2 иг�
 
 class Bricks(BaseBlock):
     BlockImage = load_image("Bricks.png")
+    DefaultHp = 20
 
 
-class Stone(BaseBlock):
-    BlockImage = load_image("Stone.png")
+class Iron(BaseBlock):
+    BlockImage = load_image("Iron.png")
+    Indestructible = True
+
+
+class Bushes (BaseBlock):
+    BlockImage = load_image("Bushes.png")
+    Solid = False
+    Layer = BaseBlock.UP
 
 
 __blocks = []

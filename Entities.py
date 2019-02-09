@@ -9,6 +9,7 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
     EntityImage = load_image("NoneTexture.png")  # Стандартная текстура
     Colliding = True
     DefaultHp = 10
+    Invulnerability = False
 
     def __init__(self, x, y, group, direction=UP):
         super().__init__(group)
@@ -37,7 +38,7 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         if not pygame.Rect.colliderect(self.rect, screen_rect):
             self.kill()
 
-        if self.hp == 0:
+        if self.hp <= 0:
             self.kill()
 
     def get_event(self, event):
@@ -52,9 +53,7 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         self.rect.x, self.rect.y = x, y
 
     def get_damage(self, damage):
-        if damage > self.hp:
-            self.hp = 0
-        else:
+        if not self.Invulnerability:
             self.hp -= damage
 
 
