@@ -104,7 +104,7 @@ class FirstPlayer(Player):
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
         # Стрельба
-        if key[pygame.K_LALT]:
+        if key[pygame.K_SPACE]:
             self.shoot(self.direction)
         # Движение танка
         self.is_moving = True
@@ -126,7 +126,7 @@ class SecondPlayer(Player):  # Противник
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
         # Стрельба
-        if key[pygame.K_RALT]:
+        if key[pygame.K_RETURN]:
             self.shoot(self.direction)
         # Движение танка
         self.is_moving = True
