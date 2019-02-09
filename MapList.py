@@ -42,7 +42,7 @@ def get_map_wrapper(id):
         return __maps[id]
     except IndexError:
         Tools.logger.write("Map with ID {} doesn't exist".format(id), Tools.logger.ERROR)
-        return Empty
+        return Test
 
 
 if __name__ == "__main__":
