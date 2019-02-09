@@ -1,4 +1,6 @@
 import os
+import sys
+
 import pygame
 from Logging import Logger
 
@@ -25,3 +27,8 @@ def load_image(name, color_key=None):
         return image
     except pygame.error as ex:
         logger.write("Can't load image " + name, logger.ERROR)
+
+
+def terminate():
+    pygame.quit()
+    sys.exit()

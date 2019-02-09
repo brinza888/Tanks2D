@@ -6,10 +6,10 @@ from Menu import menu
 from Entities import FirstPlayer, SecondPlayer
 
 
-def game():
+def game(map_id):
     load_blocks()
 
-    board = get_map_wrapper(0).Map
+    board = get_map_wrapper(map_id).Map
 
     try:
         level = Map(board, FirstPlayer, SecondPlayer)
@@ -23,15 +23,13 @@ def game():
 
     clock = pygame.time.Clock()
 
-    running = True
     logger.write("Game started", logger.INFO)
 
-    while running:
+    while True:
         try:
             for event in pygame.event.get():
                 level.get_event(event)
                 if event.type == pygame.QUIT:
-                    running = False
                     logger.write("User closed game window", logger.ACTION)
 
                 elif event.type == pygame.KEYDOWN:
@@ -48,9 +46,4 @@ def game():
         except Exception as ex:
             logger.write("Exception in game: {}".format(ex), logger.ERROR)
 
-    pygame.quit()
-    logger.write("Game quited", logger.INFO)
-
-
-menu()
-game()
+game(menu())
