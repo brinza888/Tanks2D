@@ -20,6 +20,7 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         self.hp = self.DefaultHp  # Очки прочности
         self.speed = 0  # Максимальная скорость
         self.is_moving = False  # Движение танка
+        self.killed = False
 
         self.image = self.ImageList[self.direction]
         self.rect = self.image.get_rect()
@@ -56,6 +57,10 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         if not self.Invulnerability:
             self.hp -= damage
 
+    def kill(self):
+        super(BaseEntity, self).kill()
+        self.killed = True
+
 
 class Player(BaseEntity):  # Базовый игрок
     EntityImage = load_image("NoneTexture.png")
@@ -63,11 +68,16 @@ class Player(BaseEntity):  # Базовый игрок
     def __init__(self, *args):
         super().__init__(*args)
         self.speed = 3
+        self.bullet = None
 
     def update(self, solid_blocks, entities):
         super().update(solid_blocks, entities)
+        if self.bullet and self.bullet.killed:
+            self.bullet = None
 
     def shoot(self, direction):  # Стрельба
+        if self.bullet is not None:
+            return
         x, y = self.rect.x, self.rect.y
         if direction == 0 or direction == 2:
             y += 15
@@ -82,7 +92,7 @@ class Player(BaseEntity):  # Базовый игрок
             else:
                 y += 32
 
-        Bullet(self, x, y)
+        self.bullet = Bullet(self, x, y)
 
     def get_event(self, event):
         pass
