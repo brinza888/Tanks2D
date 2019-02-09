@@ -7,6 +7,8 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
     ANGLE = 90  # Угол поворота
 
     EntityImage = load_image("NoneTexture.png")  # Стандартная текстура
+    Colliding = True
+    DefaultHp = 10
 
     def __init__(self, x, y, group, direction=UP):
         super().__init__(group)
@@ -14,7 +16,7 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         self.direction = direction  # Установка направления
         self.group = group
 
-        self.hp = 100  # Очки прочности
+        self.hp = self.DefaultHp  # Очки прочности
         self.speed = 0  # Максимальная скорость
         self.is_moving = False  # Движение танка
 
@@ -23,15 +25,17 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         self.rect.x, self.rect.y = x, y
 
     def update(self, solid_blocks, entities):
-        pygame.draw.rect(screen, (255, 0, 0), self.rect, 1)
         if self.is_moving:
             dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed  # Расчет проекции на Ox
             dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)  # Расчет проекции на Oy
             self.rect = self.rect.move(dx, dy)
-            if pygame.sprite.spritecollide(self, solid_blocks, False):
+            if self.Colliding and pygame.sprite.spritecollide(self, solid_blocks, False):
                 self.rect = self.rect.move(-dx, -dy)
 
         if not pygame.Rect.colliderect(self.rect, screen_rect):
+            self.kill()
+
+        if self.hp == 0:
             self.kill()
 
     def get_event(self, event):
@@ -45,6 +49,12 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
 
+    def get_damage(self, damage):
+        if damage > self.hp:
+            self.hp = 0
+        else:
+            self.hp -= damage
+
 
 class Player(BaseEntity):  # Базовый игрок
     EntityImage = load_image("NoneTexture.png")
@@ -56,9 +66,6 @@ class Player(BaseEntity):  # Базовый игрок
         self.center = self.rect.x + self.rect.width, self.rect.y + self.rect.height
 
     def update(self, solid_blocks, entities):
-        for block in pygame.sprite.spritecollide(self, solid_blocks, dokill=False):
-            if self.center[0] < block.center[0]:
-                pass
         super().update(solid_blocks, entities)
 
     def shoot(self, direction):  # Стрельба
@@ -80,7 +87,7 @@ class FirstPlayer(Player):
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
         # Стрельба
-        if key[pygame.K_SPACE]:
+        if key[pygame.K_LALT]:
             self.shoot(self.direction)
         # Движение танка
         self.is_moving = True
@@ -102,7 +109,7 @@ class SecondPlayer(Player):  # Противник
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
         # Стрельба
-        if key[pygame.K_SPACE]:
+        if key[pygame.K_RALT]:
             self.shoot(self.direction)
         # Движение танка
         self.is_moving = True
@@ -120,12 +127,26 @@ class SecondPlayer(Player):  # Противник
 
 class Bullet(BaseEntity):  # Снаряд
     EntityImage = load_image("Bullet.png")
+    Colliding = False
 
     def __init__(self, owner, x, y):
         super().__init__(x, y, owner.group, direction=owner.direction)
         self.owner = owner
         self.speed = 8
+        self.damage = 10
         self.is_moving = True
 
     def update(self, solid_blocks, entities):
-        super().update(solid_blocks, entities)
+        super(Bullet, self).update(solid_blocks, entities)
+        block = pygame.sprite.spritecollideany(self, solid_blocks)
+        if block is not None:
+            block.get_damage(self.damage)
+            self.kill()
+            return
+        entity = pygame.sprite.spritecollideany(self, entities)
+        print(entity)
+        if entity not in (None, self, self.owner):
+            entity.get_damage(self.damage)
+            self.kill()
+            return
+

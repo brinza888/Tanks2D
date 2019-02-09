@@ -19,8 +19,14 @@ class BaseBlock(pygame.sprite.Sprite):
         self.center = self.rect.x + self.rect.width, self.rect.y + self.rect.height
 
     def update(self):
-        if self.hp <= 0:
+        if self.hp == 0:
             self.kill()
+
+    def get_damage(self, damage):
+        if damage > self.hp:
+            self.hp = 0
+        else:
+            self.hp -= damage
 
     def get_event(self, event):
         pass
