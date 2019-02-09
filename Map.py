@@ -1,10 +1,10 @@
 from Tools import *
 from Blocks import *
-from Entities import FirstPlayer, SecondPlayer
+from random import choice
 
 
 class Map:
-    def __init__(self, board):
+    def __init__(self, board, p1, p2):
         self.board = board
         self.up_blocks = pygame.sprite.Group()  # Группа верхних блоков (для отрисовки)
         self.down_blocks = pygame.sprite.Group()  # Группа нижних блоков (для отрисовки)
@@ -14,6 +14,10 @@ class Map:
         self.cell_size = 32
         self.rows = height // self.cell_size
         self.cells = width // self.cell_size
+
+        self.player1 = p1
+        self.player2 = p2
+        self.__spawns1, self.__spawns2 = [], []
 
     def generate_map(self):
         for i in range(self.rows):
@@ -26,9 +30,13 @@ class Map:
                 if b.Solid:
                     self.solid_blocks.add(b)
                 if block is FirstPlayerSpawn:
-                    FirstPlayer(i * self.cell_size, j * self.cell_size, self.entities)
+                    self.__spawns1.append((i * self.cell_size, j * self.cell_size))
                 if block is SecondPlayerSpawn:
-                    SecondPlayer(i * self.cell_size, j * self.cell_size, self.entities)
+                    self.__spawns2.append((i * self.cell_size, j * self.cell_size))
+
+    def spawn_players(self):
+        self.player1(*choice(self.__spawns1), self.entities)
+        self.player2(*choice(self.__spawns2), self.entities)
 
     def draw(self, _screen):
         self.down_blocks.draw(_screen)

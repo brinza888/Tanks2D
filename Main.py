@@ -3,6 +3,7 @@ from Map import Map
 from Blocks import load_blocks
 from MapList import get_map_wrapper
 from Menu import menu
+from Entities import FirstPlayer, SecondPlayer
 
 
 def game():
@@ -11,12 +12,14 @@ def game():
     board = get_map_wrapper(0).Map
 
     try:
-        level = Map(board)
+        level = Map(board, FirstPlayer, SecondPlayer)
         level.generate_map()
     except Exception as ex:
         logger.write("Level generation fatal error: {}".format(ex), logger.ERROR)
         logger.write("Game interrupted because fatal error".format(ex), logger.INFO)
         exit(0)
+
+    level.spawn_players()
 
     clock = pygame.time.Clock()
 
