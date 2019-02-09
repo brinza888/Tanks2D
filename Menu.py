@@ -41,7 +41,6 @@ def menu():
     fon = pygame.transform.scale(load_image('NoneTexture.png'), (width, height))
     screen.blit(fon, (0, 0))
     button_text = "Start Game"
-
     start_game.image.blit(*text(button_text))
 
     while True:
@@ -50,7 +49,7 @@ def menu():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_game.update(event):
-                    change_level()
+                    return change_level()
 
         buttons.draw(screen)
         pygame.display.flip()
@@ -70,7 +69,12 @@ def change_level():
             if event.type == pygame.QUIT:
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                print(levels.update(event))
+                for level in levels:
+                    map_id = level.update(event)
+                    if map_id:
+                        print(map_id)
+                        return map_id
+
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     menu()
