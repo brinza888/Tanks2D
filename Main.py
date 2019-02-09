@@ -19,8 +19,9 @@ def game(map_id):
     level.spawn_players()
     clock = pygame.time.Clock()
     logger.write("Game started", logger.INFO)
+    running = True
 
-    while True:
+    while running:
         try:
             for event in pygame.event.get():
                 level.get_event(event)
@@ -29,7 +30,7 @@ def game(map_id):
                     logger.write("User closed game window", logger.ACTION)
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        game(menu())
+                        running = False
             screen.fill((0, 0, 0))
             level.draw(screen)
             level.update()
@@ -39,4 +40,5 @@ def game(map_id):
             logger.write("Exception in game: {}".format(ex), logger.ERROR)
 
 
-game(menu())
+while True:
+    game(menu())
