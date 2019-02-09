@@ -14,6 +14,17 @@ class Button(pygame.sprite.Sprite):
         return self.rect.collidepoint(*event.pos)
 
 
+class LevelButton(Button):
+    def __init__(self, x, y, w, h, group, map_id):
+        super(LevelButton, self).__init__(x, y, w, h, group)
+        self.map_id = map_id
+
+    def update(self, event):
+        if self.rect.collidepoint(*event.pos):
+            print("Block №", self.map_id)
+            return self.map_id
+
+
 def text(text):
     font = pygame.font.Font(None, 30)
     string_rendered = font.render(text, 1, pygame.Color('black'))
@@ -29,37 +40,41 @@ def menu():
 
     fon = pygame.transform.scale(load_image('NoneTexture.png'), (width, height))
     screen.blit(fon, (0, 0))
-    button_text = ["Start Game"]
+    button_text = "Start Game"
 
-    start_game.image.blit(*text(button_text[0]))
+    start_game.image.blit(*text(button_text))
 
-    running = True
-    while running:
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_game.update(event):
                     change_level()
-                    return
+
         buttons.draw(screen)
         pygame.display.flip()
 
 
 def change_level():
-    running = True
     size = (89, 89)
     levels = pygame.sprite.Group()
+    counter = 0
     for y in range(50, 468, 139):
         for x in range(50, 468, 139):
-            Button(y, x, *size, levels)
+            counter += 1
+            LevelButton(x, y, *size, levels, map_id=counter)
 
-    while running:
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                return
+                print(levels.update(event))
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    menu()
+
         screen.fill((0, 0, 0))
         levels.draw(screen)
         pygame.display.flip()
