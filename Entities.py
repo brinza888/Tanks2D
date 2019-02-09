@@ -153,7 +153,6 @@ class Bullet(BaseEntity):  # Снаряд
             self.kill()
             return
         entity = pygame.sprite.spritecollideany(self, entities)
-        print(entity)
         if entity not in (None, self, self.owner):
             entity.get_damage(self.damage)
             self.kill()
