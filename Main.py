@@ -8,9 +8,7 @@ from Entities import FirstPlayer, SecondPlayer
 
 def game(map_id):
     load_blocks()
-
     board = get_map_wrapper(map_id).Map
-
     try:
         level = Map(board, FirstPlayer, SecondPlayer)
         level.generate_map()
@@ -18,11 +16,8 @@ def game(map_id):
         logger.write("Level generation fatal error: {}".format(ex), logger.ERROR)
         logger.write("Game interrupted because fatal error".format(ex), logger.INFO)
         exit(0)
-
     level.spawn_players()
-
     clock = pygame.time.Clock()
-
     logger.write("Game started", logger.INFO)
 
     while True:
@@ -31,16 +26,12 @@ def game(map_id):
                 level.get_event(event)
                 if event.type == pygame.QUIT:
                     logger.write("User closed game window", logger.ACTION)
-
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        menu()
-                        game()
-
+                        game(menu())
             screen.fill((0, 0, 0))
             level.draw(screen)
             level.update()
-
             pygame.display.flip()
             clock.tick(50)
         except Exception as ex:
