@@ -25,6 +25,7 @@ def game(map_id):
             for event in pygame.event.get():
                 level.get_event(event)
                 if event.type == pygame.QUIT:
+                    terminate()
                     logger.write("User closed game window", logger.ACTION)
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
