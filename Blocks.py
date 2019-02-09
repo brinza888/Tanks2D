@@ -16,7 +16,6 @@ class BaseBlock(pygame.sprite.Sprite):
         self.hp = self.DefaultHp
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
-        self.center = self.rect.x + self.rect.width, self.rect.y + self.rect.height
 
     def update(self):
         if self.hp == 0:

@@ -29,9 +29,10 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
             dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed  # Расчет проекции на Ox
             dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)  # Расчет проекции на Oy
             self.rect = self.rect.move(dx, dy)
-            if self.Colliding and (pygame.sprite.spritecollideany(self, solid_blocks, False) or
-                                   pygame.sprite.spritecollideany(self, entities, False)) not in (self, None):
-                self.rect = self.rect.move(-dx, -dy)
+            if self.Colliding:
+                if pygame.sprite.spritecollideany(self, solid_blocks) or \
+                        len(pygame.sprite.spritecollide(self, entities, False)) != 1:
+                    self.rect = self.rect.move(-dx, -dy)
 
         if not pygame.Rect.colliderect(self.rect, screen_rect):
             self.kill()
@@ -63,8 +64,6 @@ class Player(BaseEntity):  # Базовый игрок
     def __init__(self, *args):
         super().__init__(*args)
         self.speed = 3
-        self.forbidden = []
-        self.center = self.rect.x + self.rect.width, self.rect.y + self.rect.height
 
     def update(self, solid_blocks, entities):
         super().update(solid_blocks, entities)
