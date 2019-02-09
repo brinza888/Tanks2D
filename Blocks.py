@@ -56,6 +56,11 @@ class SecondPlayerSpawn(BaseBlock):  # Точка возрождения 2 иг�
 class Bricks(BaseBlock):
     BlockImage = load_image("Bricks.png")
     DefaultHp = 20
+    second_image = load_image("DamagedBricks.png")
+
+    def get_damage(self, damage):
+        super(Bricks, self).get_damage(damage)
+        self.image = Bricks.second_image
 
 
 class Iron(BaseBlock):
