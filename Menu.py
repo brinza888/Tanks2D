@@ -69,7 +69,6 @@ def change_level():
                 for level in levels:
                     map_id = level.update(event)
                     if map_id:
-                        print(map_id)
                         return map_id
 
             elif event.type == pygame.KEYDOWN:
