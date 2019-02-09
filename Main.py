@@ -31,6 +31,11 @@ def game():
                     running = False
                     logger.write("User closed game window", logger.ACTION)
 
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        menu()
+                        game()
+
             screen.fill((0, 0, 0))
             level.draw(screen)
             level.update()
