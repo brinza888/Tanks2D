@@ -1,5 +1,4 @@
 import Tools
-import sys
 
 
 class MapWrapper:
@@ -34,11 +33,8 @@ class Empty (MapWrapper):
 
 __maps = []
 
-sys.path.append("API")
-__import__("user_levels")
 for v in MapWrapper.__subclasses__():
-    if len(v.Map) == 19 and len(v.Map[18]) == 19:
-        __maps.append(v)
+    __maps.append(v)
 
 
 def get_map_wrapper(id):
