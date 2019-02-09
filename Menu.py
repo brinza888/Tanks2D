@@ -21,7 +21,6 @@ class LevelButton(Button):
 
     def update(self, event):
         if self.rect.collidepoint(*event.pos):
-            print("Block №", self.map_id)
             return self.map_id
 
 
@@ -56,11 +55,11 @@ def menu():
 def change_level():
     size = (89, 89)
     levels = pygame.sprite.Group()
-    counter = 0
+    counter = 1
     for y in range(50, 468, 139):
         for x in range(50, 468, 139):
-            counter += 1
             LevelButton(x, y, *size, levels, map_id=counter)
+            counter += 1
 
     while True:
         for event in pygame.event.get():

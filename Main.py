@@ -37,4 +37,5 @@ def game(map_id):
         except Exception as ex:
             logger.write("Exception in game: {}".format(ex), logger.ERROR)
 
+
 game(menu())
