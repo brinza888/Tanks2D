@@ -60,7 +60,7 @@ class Bricks(BaseBlock):
 
     def get_damage(self, damage):
         super(Bricks, self).get_damage(damage)
-        self.image = Bricks.second_image
+        self.image = self.second_image
 
 
 class Iron(BaseBlock):
