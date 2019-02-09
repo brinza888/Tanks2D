@@ -25,10 +25,12 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
     def update(self, solid_blocks, entities):
         pygame.draw.rect(screen, (255, 0, 0), self.rect, 1)
         if self.is_moving:
+            x, y = self.rect.topleft
             dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed  # Расчет проекции на Ox
             dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)  # Расчет проекции на Oy
             self.rect = self.rect.move(dx, dy)
-            if pygame.sprite.spritecollide(self, solid_blocks, False):
+            if pygame.sprite.spritecollide(self, solid_blocks, False) or \
+                    len(pygame.sprite.spritecollide(self, entities, False)) != 1:
                 self.rect = self.rect.move(-dx, -dy)
 
         if not pygame.Rect.colliderect(self.rect, screen_rect):
@@ -65,8 +67,16 @@ class Player(BaseEntity):  # Базовый игрок
         x, y = self.rect.x, self.rect.y
         if direction == 0 or direction == 2:
             y += 15
+            if direction == 0:
+                x += 32
+            else:
+                x -= 16
         elif direction == 1 or direction == 3:
             x += 15
+            if direction == 1:
+                y -= 16
+            else:
+                y += 32
 
         Bullet(self, x, y)
 
