@@ -26,14 +26,12 @@ def text(text):
 def menu():
     buttons = pygame.sprite.Group()
     start_game = Button(100, 100, 400, 100, buttons)
-    load_level = Button(100, 400, 400, 100, buttons)
 
     fon = pygame.transform.scale(load_image('NoneTexture.png'), (width, height))
     screen.blit(fon, (0, 0))
-    button_text = ["Start Game", "Load level"]
+    button_text = ["Start Game"]
 
     start_game.image.blit(*text(button_text[0]))
-    load_level.image.blit(*text(button_text[1]))
 
     running = True
     while running:
@@ -42,8 +40,6 @@ def menu():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_game.update(event):
-                    return
-                if load_level.update(event):
                     change_level()
                     return
         buttons.draw(screen)
