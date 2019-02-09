@@ -28,6 +28,9 @@ class BaseEntity(pygame.sprite.Sprite):
             dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed  # Расчет проекции на Ox
             dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)  # Расчет проекции на Oy
             self.rect = self.rect.move(dx, dy)
+            if pygame.sprite.spritecollide(self, solid_blocks, False):
+                self.rect = self.rect.move(-dx, -dy)
+
         if not pygame.Rect.colliderect(self.rect, screen_rect):
             self.kill()
 
