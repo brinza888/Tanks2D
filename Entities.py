@@ -69,12 +69,16 @@ class Player(BaseEntity):  # Базовый игрок
     def __init__(self, *args):
         super().__init__(*args)
         self.speed = 3
+        self.counter = 0
         self.bullet = None
 
     def update(self, solid_blocks, entities):
         super().update(solid_blocks, entities)
         if self.bullet and self.bullet.killed:
             self.bullet = None
+
+        if self.hp <= 0:
+            self.kill_player()
 
     def shoot(self, direction):  # Стрельба
         if self.bullet is not None:
@@ -96,12 +100,18 @@ class Player(BaseEntity):  # Базовый игрок
         Player.Shoot_sound.play()
         self.bullet = Bullet(self, x, y)
 
+    def kill_player(self):
+        self.counter += 1
+        kill = pygame.event.Event(pygame.USEREVENT, score=self.counter, killed=self.Name)
+        pygame.event.post(kill)
+
     def get_event(self, event):
         pass
 
 
 class FirstPlayer(Player):
     EntityImage = load_image("FirstPlayerTank.png")
+    Name = "First"
 
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
@@ -124,6 +134,7 @@ class FirstPlayer(Player):
 
 class SecondPlayer(Player):  # Противник
     EntityImage = load_image("SecondPlayerTank.png")
+    Name = "Second"
 
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
