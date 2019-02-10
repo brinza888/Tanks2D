@@ -16,7 +16,7 @@ logger = Logger()  # Логирование ошибок в текстовик
 
 
 def load_image(name, color_key=None):
-    fullname = os.path.join("data", name)
+    fullname = os.path.join("sprites", name)
     try:
         image = pygame.image.load(fullname)
         image = image.convert_alpha()
