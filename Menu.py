@@ -27,7 +27,7 @@ class LevelButton(Button):
 def menu():
     buttons = pygame.sprite.Group()
     start_game = Button(100, 50, 400, 100, buttons)
-    fon = pygame.transform.scale(load_image('NoneTexture.png'), (width, height))
+    fon = pygame.transform.scale(load_image('menu.jpg'), (width, height))
     screen.blit(fon, (0, 0))
     button_text = "Start Game"
     start_game.image.blit(*text(button_text, 150, 40, pygame.Color("Black")))
@@ -40,8 +40,8 @@ def menu():
 
     y = 200
     for num in range(len(red_text)):
-        screen.blit(*text(green_text[num], 50, y, pygame.Color("Black")))
-        screen.blit(*text(red_text[num], 400, y, pygame.Color("Black")))
+        screen.blit(*text(green_text[num], 400, y, pygame.Color("Green")))
+        screen.blit(*text(red_text[num], 50, y, pygame.Color("Red")))
         y += 60
 
     while True:
@@ -77,7 +77,10 @@ def change_level():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     menu()
-
         screen.fill((0, 0, 0))
         levels.draw(screen)
+        counter = 0
+        for level in levels:
+            counter += 1
+            level.image.blit(*text(str(counter) + " LVL", 22, 10, pygame.Color("Black")))
         pygame.display.flip()
