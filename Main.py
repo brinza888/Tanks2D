@@ -7,8 +7,6 @@ from Entities import FirstPlayer, SecondPlayer
 
 
 def game(map_id):
-    fp_points = 0
-    sp_points = 0
     board = get_map_wrapper(map_id).Map
     try:
         level = Map(board, FirstPlayer, SecondPlayer)
@@ -16,7 +14,10 @@ def game(map_id):
     except Exception as ex:
         logger.write("Level generation fatal error: {}".format(ex), logger.ERROR)
         exit(0)
-    level.spawn_players()
+
+    level.spawn_player1()
+    level.spawn_player2()
+
     clock = pygame.time.Clock()
     logger.write("Game started", logger.INFO)
     running = True
@@ -31,18 +32,12 @@ def game(map_id):
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         running = False
-                elif event.type == pygame.USEREVENT:
-                    print(event.score)
-                    if event.killed == "Second":
-                        fp_points = event.score
-                    elif event.killed == "First":
-                        sp_points = event.score
 
             screen.fill((0, 0, 0))
+
             level.draw(screen)
             level.update()
-            screen.blit(*text(str(fp_points), 208, 32, pygame.Color("Green")))
-            screen.blit(*text(str(sp_points), 408, 32, pygame.Color("Red")))
+
             pygame.display.flip()
             clock.tick(50)
         except Exception as ex:

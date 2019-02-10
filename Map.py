@@ -15,8 +15,12 @@ class Map:
         self.rows = height // self.cell_size
         self.cells = width // self.cell_size
 
-        self.player1 = p1
-        self.player2 = p2
+        self.pclass1 = p1
+        self.pclass2 = p2
+
+        self.points1 = self.points2 = 0
+        self.player1 = self.player2 = None
+
         self.__spawns1, self.__spawns2 = [], []
 
     def generate_map(self):
@@ -34,14 +38,19 @@ class Map:
                 if block is SecondPlayerSpawn:
                     self.__spawns2.append((i * self.cell_size, j * self.cell_size))
 
-    def spawn_players(self):
-        self.player1(*choice(self.__spawns1), self.entities)
-        self.player2(*choice(self.__spawns2), self.entities)
+    def spawn_player1(self):
+        self.player1 = self.pclass1(*choice(self.__spawns1), self.entities)
+
+    def spawn_player2(self):
+        self.player2 = self.pclass2(*choice(self.__spawns2), self.entities)
 
     def draw(self, _screen):
         self.down_blocks.draw(_screen)
         self.entities.draw(_screen)
         self.up_blocks.draw(_screen)
+
+        _screen.blit(*text(str(self.pclass1.Scores), 208, 0, pygame.Color("Green")))
+        _screen.blit(*text(str(self.pclass2.Scores), 408, 0, pygame.Color("Red")))
 
     def update(self):
         self.down_blocks.update()
@@ -49,6 +58,11 @@ class Map:
         self.up_blocks.update()
 
     def get_event(self, event):
+        if event.type == pygame.USEREVENT and event.player is self.player1:
+            self.pclass1.Scores += event.scores
+        if event.type == pygame.USEREVENT and event.player is self.player2:
+            self.pclass2.Scores += event.scores
+
         for bl in self.down_blocks:
             bl.get_event(event)
         for ent in self.entities:

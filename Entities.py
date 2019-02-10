@@ -39,9 +39,6 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         if not pygame.Rect.colliderect(self.rect, screen_rect):
             self.kill()
 
-        if self.hp <= 0:
-            self.kill()
-
     def get_event(self, event):
         pass
 
@@ -56,6 +53,9 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
     def get_damage(self, damage):
         if not self.Invulnerability:
             self.hp -= damage
+        if self.hp <= 0:
+            self.kill()
+            return True
 
     def kill(self):
         super(BaseEntity, self).kill()
@@ -65,6 +65,9 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
 class Player(BaseEntity):  # Базовый игрок
     EntityImage = load_image("NoneTexture.png")
     Shoot_sound = load_sound("shoot.wav")
+
+    Name = "NonePlayer"
+    Scores = 0
 
     def __init__(self, *args):
         super().__init__(*args)
@@ -76,9 +79,6 @@ class Player(BaseEntity):  # Базовый игрок
         super().update(solid_blocks, entities)
         if self.bullet and self.bullet.killed:
             self.bullet = None
-
-        if self.hp <= 0:
-            self.kill_player()
 
     def shoot(self, direction):  # Стрельба
         if self.bullet is not None:
@@ -100,13 +100,10 @@ class Player(BaseEntity):  # Базовый игрок
         Player.Shoot_sound.play()
         self.bullet = Bullet(self, x, y)
 
-    def kill_player(self):
-        self.counter += 1
-        kill = pygame.event.Event(pygame.USEREVENT, score=self.counter, killed=self.Name)
+    def kill(self):
+        kill = pygame.event.Event(pygame.USEREVENT, scores=-10, player=self)
         pygame.event.post(kill)
-
-    def get_event(self, event):
-        pass
+        super(Player, self).kill()
 
 
 class FirstPlayer(Player):
@@ -175,6 +172,9 @@ class Bullet(BaseEntity):  # Снаряд
             return
         entity = pygame.sprite.spritecollideany(self, entities)
         if entity not in (None, self, self.owner):
-            entity.get_damage(self.damage)
+            killed = entity.get_damage(self.damage)
+            if killed:
+                ev = pygame.event.Event(pygame.USEREVENT, scores=10, player=self.owner)
+                pygame.event.post(ev)
             self.kill()
 

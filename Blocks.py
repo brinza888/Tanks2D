@@ -18,13 +18,12 @@ class BaseBlock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
 
-    def update(self):
-        if self.hp <= 0:
-            self.kill()
-
     def get_damage(self, damage):
         if not self.Indestructible:
             self.hp -= damage
+        if self.hp <= 0:
+            self.kill()
+            return True
 
     def get_event(self, event):
         pass
