@@ -66,9 +66,9 @@ class Map:
             self.spawn_player2()
 
     def get_event(self, event):
-        if event.type == pygame.USEREVENT and event.player is self.player1:
+        if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass1:
             self.pclass1.Scores += event.scores
-        if event.type == pygame.USEREVENT and event.player is self.player2:
+        if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass2:
             self.pclass2.Scores += event.scores
 
         for bl in self.down_blocks:
