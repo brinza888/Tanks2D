@@ -57,6 +57,11 @@ class Map:
         self.entities.update(self.solid_blocks, self.entities)
         self.up_blocks.update()
 
+        if self.player1.killed:
+            self.spawn_player1()
+        if self.player2.killed:
+            self.spawn_player2()
+
     def get_event(self, event):
         if event.type == pygame.USEREVENT and event.player is self.player1:
             self.pclass1.Scores += event.scores
