@@ -109,6 +109,7 @@ class Player(BaseEntity):  # Базовый игрок
 class FirstPlayer(Player):
     EntityImage = load_image("FirstPlayerTank.png")
     Name = "First"
+    BulletImage = load_image("FirstBullet.png")
 
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
@@ -132,6 +133,7 @@ class FirstPlayer(Player):
 class SecondPlayer(Player):  # Противник
     EntityImage = load_image("SecondPlayerTank.png")
     Name = "Second"
+    BulletImage = load_image("SecondBullet.png")
 
     def get_event(self, event):  # Обработка событий
         key = pygame.key.get_pressed()
@@ -153,10 +155,11 @@ class SecondPlayer(Player):  # Противник
 
 
 class Bullet(BaseEntity):  # Снаряд
-    EntityImage = load_image("Bullet.png")
+    EntityImage = load_image("NoneTexture.png")
     Colliding = False
 
     def __init__(self, owner, x, y):
+        self.EntityImage = owner.BulletImage
         super().__init__(x, y, owner.group, direction=owner.direction)
         self.owner = owner
         self.speed = 8
