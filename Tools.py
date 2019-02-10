@@ -26,7 +26,15 @@ def load_image(name, color_key=None):
             image.set_colorkey(color_key)
         return image
     except pygame.error as ex:
-        logger.write("Can't load image " + name, logger.ERROR)
+        logger.write("Can't load image {} because: {}".format(name, ex), logger.ERROR)
+
+
+def load_sound(name):
+    fullname = os.path.join("music", name)
+    try:
+        return pygame.mixer.Sound(fullname)
+    except pygame.error as ex:
+        logger.write("Cant load music {} because: {}".format(name, ex), logger.ERROR)
 
 
 def text(text):

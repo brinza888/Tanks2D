@@ -74,13 +74,32 @@ class Bushes (BaseBlock):
     Layer = BaseBlock.UP
 
 
+class FirstPlayerFlag (BaseBlock):
+    BlockImage = load_image("FirstPlayerFlag.png")
+    DefaultHp = 100
+
+    def kill(self):
+        super(FirstPlayerFlag, self).kill()
+
+
+class SecondPlayerFlag (BaseBlock):
+    BlockImage = load_image("SecondPlayerFlag.png")
+    DefaultHp = 100
+
+    def kill(self):
+        super(SecondPlayerFlag, self).kill()
+
+
 __blocks = []
 
 
 # Поиск и загрузка существующих блоков (от класса BaseBlock)
 def load_blocks():
-    for cls in BaseBlock.__subclasses__():
+    id_list = ""
+    for i, cls in enumerate(BaseBlock.__subclasses__()):
         __blocks.append(cls)
+        id_list += "Block '{}' with ID {}\n".format(cls.__name__, i)
+    logger.write("ID list:\n{}".format(id_list), logger.INFO)
 
 
 # Возвращает класс блока по данному ID

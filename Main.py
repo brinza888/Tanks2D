@@ -7,14 +7,12 @@ from Entities import FirstPlayer, SecondPlayer
 
 
 def game(map_id):
-    load_blocks()
     board = get_map_wrapper(map_id).Map
     try:
         level = Map(board, FirstPlayer, SecondPlayer)
         level.generate_map()
     except Exception as ex:
         logger.write("Level generation fatal error: {}".format(ex), logger.ERROR)
-        logger.write("Game interrupted because fatal error".format(ex), logger.INFO)
         exit(0)
     level.spawn_players()
     clock = pygame.time.Clock()
@@ -40,8 +38,26 @@ def game(map_id):
             logger.write("Exception in game: {}".format(ex), logger.ERROR)
 
 
-pygame.mixer.music.load('music/MainTheme.wav')
-pygame.mixer.music.set_volume(0.50)
-pygame.mixer.music.play(-1)
+logger.write("Game loaded", logger.INFO)
+
+
+try:
+    pygame.mixer.music.load("music/Maintheme.wav")
+    pygame.mixer.music.set_volume(0.25)
+    pygame.mixer.music.play(-1)
+except pygame.error as ex:
+    logger.write("Can load theme music: {}".format(ex), logger.ERROR)
+
+
+try:
+    load_blocks()
+except Exception as ex:
+    logger.write("Load blocks fatal error: {}".format(ex), logger.ERROR)
+    exit(0)
+
+
 while True:
-    game(menu())
+    try:
+        game(menu())
+    except Exception as ex:
+        logger.write("Fatal error in Game or Menu: {}".format(ex), logger.ERROR)
