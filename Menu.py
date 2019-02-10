@@ -82,5 +82,5 @@ def change_level():
         counter = 0
         for level in levels:
             counter += 1
-            level.image.blit(*text(str(counter) + " LVL", 22, 10, pygame.Color("Black")))
+            level.image.blit(*text(str(counter) + " Map", 18, 10, pygame.Color("Black")))
         pygame.display.flip()
