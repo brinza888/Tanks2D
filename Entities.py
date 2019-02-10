@@ -76,9 +76,12 @@ class Player(BaseEntity):  # Базовый игрок
         self.speed = 3
         self.counter = 0
         self.bullet = None
+        self.Invulnerability = True
 
     def update(self, solid_blocks, entities):
         super().update(solid_blocks, entities)
+        if self.Invulnerability and (self.is_moving or self.bullet):
+            self.Invulnerability = False
         if self.bullet and self.bullet.killed:  # если пуля столкнулась, то разрешить стрельбу
             self.bullet = None
 
