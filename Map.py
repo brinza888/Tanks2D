@@ -17,9 +17,8 @@ class Map:
 
         self.pclass1 = p1
         self.pclass2 = p2
-
-        self.points1 = self.points2 = 0
         self.player1 = self.player2 = None
+        self.scores_to_zero()
 
         self.__spawns1, self.__spawns2 = [], []
 
@@ -43,6 +42,10 @@ class Map:
 
     def spawn_player2(self):
         self.player2 = self.pclass2(*choice(self.__spawns2), self.entities)
+
+    def scores_to_zero(self):
+        self.pclass1.Scores = 0
+        self.pclass2.Scores = 0
 
     def draw(self, _screen):
         self.down_blocks.draw(_screen)

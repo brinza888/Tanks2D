@@ -64,6 +64,6 @@ except Exception as ex:
 
 while True:
     try:
-        game(0)
+        game(menu())
     except Exception as ex:
         logger.write("Fatal error in Game or Menu: {}".format(ex), logger.ERROR)
