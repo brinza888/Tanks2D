@@ -29,12 +29,12 @@ def load_image(name, color_key=None):
         logger.write("Can't load image " + name, logger.ERROR)
 
 
-def text(text):
+def text(text, x, y, color):
     font = pygame.font.Font(None, 30)
-    string_rendered = font.render(text, 1, pygame.Color('Black'))
+    string_rendered = font.render(text, 1, color)
     intro_rect = string_rendered.get_rect()
-    intro_rect.top = 40
-    intro_rect.x = 150
+    intro_rect.top = y
+    intro_rect.x = x
     return string_rendered, intro_rect
 
 

@@ -30,7 +30,7 @@ def menu():
     fon = pygame.transform.scale(load_image('NoneTexture.png'), (width, height))
     screen.blit(fon, (0, 0))
     button_text = "Start Game"
-    start_game.image.blit(*text(button_text))
+    start_game.image.blit(*text(button_text, 150, 40, pygame.Color("Black")))
 
     while True:
         for event in pygame.event.get():
