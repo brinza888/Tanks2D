@@ -7,12 +7,13 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
     ANGLE = 90  # Угол поворота
 
     EntityImage = load_image("NoneTexture.png")  # Стандартная текстура
-    Colliding = True
-    DefaultHp = 10
-    Invulnerability = False
+    Colliding = True   # может ли существо сталкиваться
+    DefaultHp = 10  # очки жизни при создании существа
+    Invulnerability = False  # присуща ли неубиваемость
 
     def __init__(self, x, y, group, direction=UP):
         super().__init__(group)
+        # лист изображений с разным направлением существа
         self.ImageList = [pygame.transform.rotate(self.EntityImage, 90 * i) for i in range(4)]
         self.direction = direction  # Установка направления
         self.group = group
@@ -20,7 +21,7 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         self.hp = self.DefaultHp  # Очки прочности
         self.speed = 0  # Максимальная скорость
         self.is_moving = False  # Движение танка
-        self.killed = False
+        self.killed = False  # убито ли существо
 
         self.image = self.ImageList[self.direction]
         self.rect = self.image.get_rect()
@@ -31,15 +32,15 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
             dx = cos(radians(BaseEntity.ANGLE * self.direction)) * self.speed  # Расчет проекции на Ox
             dy = - (sin(radians(BaseEntity.ANGLE * self.direction)) * self.speed)  # Расчет проекции на Oy
             self.rect = self.rect.move(dx, dy)
-            if self.Colliding:
+            if self.Colliding:  # обработка столкновений
                 if pygame.sprite.spritecollideany(self, solid_blocks) or \
                         len(pygame.sprite.spritecollide(self, entities, False)) != 1:
-                    self.rect = self.rect.move(-dx, -dy)
+                    self.rect = self.rect.move(-dx, -dy)  # откидываем противника назад
 
         if not pygame.Rect.colliderect(self.rect, screen_rect):
-            self.kill()
+            self.kill()  # если существо за экраном, убиваем его
 
-    def get_event(self, event):
+    def get_event(self, event):  # метод для обработки событий
         pass
 
     def set_direction(self, direction):  # Смена направления
@@ -50,14 +51,14 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
 
-    def get_damage(self, damage):
+    def get_damage(self, damage):  # получение урона
         if not self.Invulnerability:
             self.hp -= damage
         if self.hp <= 0:
             self.kill()
             return True
 
-    def kill(self):
+    def kill(self):  # переопределям метод на смерть существа
         super(BaseEntity, self).kill()
         self.killed = True
 
@@ -68,6 +69,7 @@ class Player(BaseEntity):  # Базовый игрок
 
     Name = "NonePlayer"
     Scores = 0
+    BulletImage = load_image("NoneTexture.png")
 
     def __init__(self, *args):
         super().__init__(*args)
@@ -77,38 +79,38 @@ class Player(BaseEntity):  # Базовый игрок
 
     def update(self, solid_blocks, entities):
         super().update(solid_blocks, entities)
-        if self.bullet and self.bullet.killed:
+        if self.bullet and self.bullet.killed:  # если пуля столкнулась, то разрешить стрельбу
             self.bullet = None
 
     def shoot(self, direction):  # Стрельба
-        if self.bullet is not None:
+        if self.bullet is not None:  # нельзя стрелять, пока прошлая пуля существует
             return
         x, y = self.rect.x, self.rect.y
+        # вычисляем координаты, откуда полетит пуля
         if direction == 0 or direction == 2:
-            y += 15
+            y += self.rect.height // 2
             if direction == 0:
-                x += 32
+                x += self.rect.width
             else:
-                x -= 16
+                x -= self.rect.width // 2
         elif direction == 1 or direction == 3:
-            x += 15
+            x += self.rect.width // 2
             if direction == 1:
-                y -= 16
+                y -= self.rect.height // 2
             else:
-                y += 32
-        Player.Shoot_sound.stop()
+                y += self.rect.height
+        Player.Shoot_sound.stop()  # звуки стрельбы
         Player.Shoot_sound.play()
-        self.bullet = Bullet(self, x, y)
+        self.bullet = Bullet(self, x, y)  # создаем пулю
 
     def kill(self):
-        kill = pygame.event.Event(pygame.USEREVENT, scores=-10, player=self)
+        kill = pygame.event.Event(pygame.USEREVENT, scores=-10, player=self)  # создаем событие, что игрок убит
         pygame.event.post(kill)
         super(Player, self).kill()
 
 
 class FirstPlayer(Player):
     EntityImage = load_image("FirstPlayerTank.png")
-    Name = "First"
     BulletImage = load_image("FirstBullet.png")
 
     def get_event(self, event):  # Обработка событий
@@ -132,7 +134,6 @@ class FirstPlayer(Player):
 
 class SecondPlayer(Player):  # Противник
     EntityImage = load_image("SecondPlayerTank.png")
-    Name = "Second"
     BulletImage = load_image("SecondBullet.png")
 
     def get_event(self, event):  # Обработка событий
@@ -159,7 +160,7 @@ class Bullet(BaseEntity):  # Снаряд
     Colliding = False
 
     def __init__(self, owner, x, y):
-        self.EntityImage = owner.BulletImage
+        self.EntityImage = owner.BulletImage  # установка картинки пули, которая присуща игроку-владельцу
         super().__init__(x, y, owner.group, direction=owner.direction)
         self.owner = owner
         self.speed = 8
@@ -168,16 +169,18 @@ class Bullet(BaseEntity):  # Снаряд
 
     def update(self, solid_blocks, entities):
         super(Bullet, self).update(solid_blocks, entities)
+
         block = pygame.sprite.spritecollideany(self, solid_blocks)
-        if block is not None:
+        if block is not None:  # проверка столкновений с блоками
             block.get_damage(self.damage)
             self.kill()
             return
+
         entity = pygame.sprite.spritecollideany(self, entities)
-        if entity not in (None, self, self.owner):
+        if entity not in (None, self, self.owner):  # проверка столкновений с существами
             killed = entity.get_damage(self.damage)
-            if killed and entity.__class__ is not Bullet:
+            if killed and entity.__class__ is not Bullet:  # Проверка убито ли существо
                 ev = pygame.event.Event(pygame.USEREVENT, scores=10, player=self.owner)
-                pygame.event.post(ev)
+                pygame.event.post(ev)  # отправляем событие, что игрок-владелец убил существо
             self.kill()
 
