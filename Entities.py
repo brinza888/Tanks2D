@@ -64,6 +64,7 @@ class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
 
 class Player(BaseEntity):  # Базовый игрок
     EntityImage = load_image("NoneTexture.png")
+    shoot_sound = pygame.mixer.Sound('music/shoot.wav')
 
     def __init__(self, *args):
         super().__init__(*args)
@@ -91,7 +92,8 @@ class Player(BaseEntity):  # Базовый игрок
                 y -= 16
             else:
                 y += 32
-
+        Player.shoot_sound.stop()
+        Player.shoot_sound.play()
         self.bullet = Bullet(self, x, y)
 
     def get_event(self, event):
