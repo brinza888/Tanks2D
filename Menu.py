@@ -24,15 +24,6 @@ class LevelButton(Button):
             return self.map_id
 
 
-def text(text):
-    font = pygame.font.Font(None, 30)
-    string_rendered = font.render(text, 1, pygame.Color('Black'))
-    intro_rect = string_rendered.get_rect()
-    intro_rect.top = 40
-    intro_rect.x = 150
-    return string_rendered, intro_rect
-
-
 def menu():
     buttons = pygame.sprite.Group()
     start_game = Button(100, 25, 400, 100, buttons)

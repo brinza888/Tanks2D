@@ -29,6 +29,15 @@ def load_image(name, color_key=None):
         logger.write("Can't load image " + name, logger.ERROR)
 
 
+def text(text):
+    font = pygame.font.Font(None, 30)
+    string_rendered = font.render(text, 1, pygame.Color('Black'))
+    intro_rect = string_rendered.get_rect()
+    intro_rect.top = 40
+    intro_rect.x = 150
+    return string_rendered, intro_rect
+
+
 def terminate():
     pygame.quit()
     sys.exit()

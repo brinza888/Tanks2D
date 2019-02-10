@@ -41,7 +41,7 @@ def game(map_id):
 
 
 pygame.mixer.music.load('music/MainTheme.wav')
-pygame.mixer.music.set_volume(0.60)
+pygame.mixer.music.set_volume(0.50)
 pygame.mixer.music.play(-1)
 while True:
     game(menu())
