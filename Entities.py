@@ -173,7 +173,7 @@ class Bullet(BaseEntity):  # Снаряд
         entity = pygame.sprite.spritecollideany(self, entities)
         if entity not in (None, self, self.owner):
             killed = entity.get_damage(self.damage)
-            if killed:
+            if killed and entity.__class__ is not Bullet:
                 ev = pygame.event.Event(pygame.USEREVENT, scores=10, player=self.owner)
                 pygame.event.post(ev)
             self.kill()
