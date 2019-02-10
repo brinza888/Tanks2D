@@ -26,11 +26,23 @@ class LevelButton(Button):
 
 def menu():
     buttons = pygame.sprite.Group()
-    start_game = Button(100, 25, 400, 100, buttons)
+    start_game = Button(100, 50, 400, 100, buttons)
     fon = pygame.transform.scale(load_image('NoneTexture.png'), (width, height))
     screen.blit(fon, (0, 0))
     button_text = "Start Game"
     start_game.image.blit(*text(button_text, 150, 40, pygame.Color("Black")))
+
+    green_text = ["Зеленый игрок: ", "W - Вперед", "A - Влево",
+                  "S - Вниз", "D - Вправо", "Пробел - Выстрел"]
+
+    red_text = ["Красный игрок:", "^ - Вперед", "< - Влево",
+                "v - Вниз", "> - Вправо", "Enter - Выстрел"]
+
+    y = 200
+    for num in range(len(red_text)):
+        screen.blit(*text(green_text[num], 50, y, pygame.Color("Black")))
+        screen.blit(*text(red_text[num], 400, y, pygame.Color("Black")))
+        y += 60
 
     while True:
         for event in pygame.event.get():
