@@ -7,7 +7,7 @@ class Button(pygame.sprite.Sprite):
         self.x, self.y = x, y
         self.w, self.h = w, h
         self.image = pygame.Surface((w, h), pygame.SRCALPHA, 32)
-        pygame.draw.rect(self.image, pygame.Color("Green"), (0, 0, self.w, self.h))
+        pygame.draw.rect(self.image, pygame.Color("Gray"), (0, 0, self.w, self.h))
         self.rect = pygame.Rect((self.x, self.y, self.w, self.h))
 
     def update(self, event):
@@ -36,7 +36,7 @@ def text(text):
 def menu():
     buttons = pygame.sprite.Group()
     start_game = Button(100, 25, 400, 100, buttons)
-    fon = pygame.transform.scale(load_image('menu.jpg'), (width, height))
+    fon = pygame.transform.scale(load_image('NoneTexture.png'), (width, height))
     screen.blit(fon, (0, 0))
     button_text = "Start Game"
     start_game.image.blit(*text(button_text))
