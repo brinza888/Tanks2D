@@ -28,6 +28,9 @@ class BaseBlock(pygame.sprite.Sprite):
     def get_event(self, event):
         pass
 
+    def update(self, entities):
+        pass
+
 
 class Air(BaseBlock):
     BlockImage = load_image("Air.png")

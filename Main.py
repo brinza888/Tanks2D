@@ -7,9 +7,9 @@ from Entities import FirstPlayer, SecondPlayer
 
 
 def game(map_id):
-    board = get_map_wrapper(map_id).Map
+    map = get_map_wrapper(map_id)
     try:
-        level = Map(board, FirstPlayer, SecondPlayer)
+        level = Map(map, FirstPlayer, SecondPlayer)
         level.generate_map()
     except Exception as ex:
         logger.write("Level generation fatal error: {}".format(ex), logger.ERROR)
@@ -35,11 +35,11 @@ def game(map_id):
 
             screen.fill((0, 0, 0))
 
-            level.draw(screen)
-            level.update()
-
-            if level.ended:
-                running = False
+            if not level.end[0]:
+                level.draw(screen)
+                level.update()
+            else:
+                pass  # вот тут if level.end[0]
 
             pygame.display.flip()
             clock.tick(50)

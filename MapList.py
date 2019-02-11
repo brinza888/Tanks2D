@@ -3,6 +3,7 @@ import Tools
 
 class MapWrapper:
     Title = ""
+    Spawn_directions = {1: 1, 2: 3}
     Map = None
 
 

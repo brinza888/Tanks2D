@@ -4,8 +4,8 @@ from random import choice
 
 
 class Map:
-    def __init__(self, board, p1, p2):
-        self.board = board
+    def __init__(self, map, p1, p2):
+        self.board = map.Map
         self.up_blocks = pygame.sprite.Group()  # Группа верхних блоков (для отрисовки)
         self.down_blocks = pygame.sprite.Group()  # Группа нижних блоков (для отрисовки)
         self.entities = pygame.sprite.Group()  # Группа существ
@@ -19,8 +19,9 @@ class Map:
         self.pclass2 = p2
         self.player1 = self.player2 = None
         self.scores_to_zero()
+        self.spawn_directions = map.Spawn_directions
 
-        self.ended = False
+        self.end = (False, None)
 
         self.__spawns1, self.__spawns2 = [], []
 
@@ -46,10 +47,10 @@ class Map:
                     b.pclass = self.pclass2
 
     def spawn_player1(self):  # спавн 1 игрока на рандомном спавн поинте
-        self.player1 = self.pclass1(*choice(self.__spawns1), self.entities)
+        self.player1 = self.pclass1(*choice(self.__spawns1), self.entities, direction=self.spawn_directions[1])
 
     def spawn_player2(self):  # спавн 2 игрока на рандомном спавн поинте
-        self.player2 = self.pclass2(*choice(self.__spawns2), self.entities)
+        self.player2 = self.pclass2(*choice(self.__spawns2), self.entities, direction=self.spawn_directions[2])
 
     def scores_to_zero(self):
         self.pclass1.Scores = 0
@@ -64,9 +65,9 @@ class Map:
         _screen.blit(*text(str(self.pclass2.Scores), 408, 0, pygame.Color("Red")))
 
     def update(self):
-        self.down_blocks.update()
+        self.down_blocks.update(self.entities)
         self.entities.update(self.solid_blocks, self.entities)
-        self.up_blocks.update()
+        self.up_blocks.update(self.entities)
 
         if self.player1.killed:  # обработка убийства и респавн
             self.spawn_player1()
@@ -74,9 +75,9 @@ class Map:
             self.spawn_player2()
 
         if self.pclass1.Scores >= 200:  # обработка выигрыша
-            self.ended = True
+            self.end = (True, self.pclass1)
         if self.pclass2.Scores >= 200:
-            self.ended = True
+            self.end = (True, self.pclass2)
 
     def get_event(self, event):
         if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass1:  # обработка начисления очков

@@ -72,8 +72,8 @@ class Player(BaseEntity):  # Базовый игрок
     Scores = 0
     BulletImage = load_image("NoneTexture.png")
 
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.speed = 3
         self.counter = 0
         self.bullet = None
