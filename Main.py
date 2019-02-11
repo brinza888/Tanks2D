@@ -25,7 +25,9 @@ def game(map_id):
     while running:
         try:
             for event in pygame.event.get():
-                level.get_event(event)
+                if not level.end[0]:
+                    level.get_event(event)
+
                 if event.type == pygame.QUIT:
                     terminate()
                     logger.write("User closed game window", logger.ACTION)
@@ -34,9 +36,9 @@ def game(map_id):
                         running = False
 
             screen.fill((0, 0, 0))
+            level.draw(screen)
 
             if not level.end[0]:
-                level.draw(screen)
                 level.update()
             else:
                 pass  # вот тут if level.end[0]
