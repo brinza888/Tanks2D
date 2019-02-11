@@ -41,7 +41,7 @@ class Map:
         self.player1 = self.pclass1(*choice(self.__spawns1), self.entities)
 
     def spawn_player2(self):
-        self.player2 = self.pclass2(*choice(self.__spawns2), self.entities)
+        self.player2 = self.pclass2(*choice(self.__spawns2), self.entities, 3)
 
     def scores_to_zero(self):
         self.pclass1.Scores = 0
