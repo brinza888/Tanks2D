@@ -49,3 +49,8 @@ def text(text, x, y, color):
 def terminate():
     pygame.quit()
     sys.exit()
+
+
+def load_background(photo):
+    # Photo должно лежать в папке sprites
+    return pygame.transform.scale(load_image(photo), (width, height))
