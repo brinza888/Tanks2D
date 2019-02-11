@@ -74,7 +74,7 @@ class Player(BaseEntity):  # Базовый игрок
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.speed = 3
+        self.speed = 2
         self.counter = 0
         self.bullet = None
         self.Invulnerability = True
