@@ -54,3 +54,6 @@ def terminate():
 def load_background(photo):
     # Photo должно лежать в папке sprites
     return pygame.transform.scale(load_image(photo), (width, height))
+
+
+pygame.display.set_icon(load_image("icon.png"))
