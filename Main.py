@@ -1,4 +1,5 @@
 from Tools import *
+from GameUI import *
 from Map import Map
 from Blocks import load_blocks
 from MapList import get_map_wrapper
@@ -41,7 +42,26 @@ def game(map_id):
             if not level.end[0]:
                 level.update()
             else:
-                pass  # вот тут if level.end[0]
+                winner = level.end[1].__name__
+                # print(winner)
+                dialogs = pygame.sprite.Group()
+                dialog = MessageBox(108, 216, 392, 147, dialogs, pygame.Color("Gray"))
+                if winner == "FirstPlayer":
+                    dialog.image.blit(*text("Победил первый игрок!", 75, 20, pygame.Color("Green")))
+                elif winner == "SecondPlayer":
+                    dialog.image.blit(*text("Победил второй игрок!", 75, 20, pygame.Color("Red")))
+                while True:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            terminate()
+                        elif event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_ESCAPE:
+                                return menu()
+                        elif event.type == pygame.MOUSEBUTTONDOWN:
+                            if dialog.update(event):
+                                return menu
+                    dialogs.draw(screen)
+                    pygame.display.flip()
 
             pygame.display.flip()
             clock.tick(50)
