@@ -73,26 +73,26 @@ class Bushes (BaseBlock):
     Layer = BaseBlock.UP
 
 
-class FirstPlayerFlag (BaseBlock):
+class PlayerFlag:
+    DefaultHp = 50
+
+    def __init__(self, *args):
+        super(PlayerFlag, self).__init__(*args)
+        self.pclass = None
+
+
+class FirstPlayerFlag (PlayerFlag, BaseBlock):
     BlockImage = load_image("FirstPlayerFlag.png")
-    DefaultHp = 100
-
-    def kill(self):
-        super(FirstPlayerFlag, self).kill()
 
 
-class SecondPlayerFlag (BaseBlock):
+class SecondPlayerFlag (PlayerFlag, BaseBlock):
     BlockImage = load_image("SecondPlayerFlag.png")
-    DefaultHp = 100
-
-    def kill(self):
-        super(SecondPlayerFlag, self).kill()
-
-
-__blocks = []
 
 
 # Поиск и загрузка существующих блоков (от класса BaseBlock)
+__blocks = []
+
+
 def load_blocks():
     id_list = ""
     for i, cls in enumerate(BaseBlock.__subclasses__()):

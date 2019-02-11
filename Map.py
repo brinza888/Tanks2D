@@ -20,9 +20,11 @@ class Map:
         self.player1 = self.player2 = None
         self.scores_to_zero()
 
+        self.ended = False
+
         self.__spawns1, self.__spawns2 = [], []
 
-    def generate_map(self):
+    def generate_map(self):  # генерация карты
         for i in range(self.rows):
             for j in range(self.cells):
                 block = get_block_by_id(self.board[j][i])
@@ -32,15 +34,21 @@ class Map:
                     b = block(i * self.cell_size, j * self.cell_size, self.down_blocks)
                 if b.Solid:
                     self.solid_blocks.add(b)
-                if block is FirstPlayerSpawn:
-                    self.__spawns1.append((i * self.cell_size, j * self.cell_size))
-                if block is SecondPlayerSpawn:
-                    self.__spawns2.append((i * self.cell_size, j * self.cell_size))
 
-    def spawn_player1(self):
+                if isinstance(b, FirstPlayerSpawn):
+                    self.__spawns1.append((b.rect.x, b.rect.y))
+                elif isinstance(b, SecondPlayerSpawn):
+                    self.__spawns2.append((b.rect.x, b.rect.y))
+
+                if isinstance(b, FirstPlayerFlag):
+                    b.pclass = self.pclass1
+                elif isinstance(b, SecondPlayerFlag):
+                    b.pclass = self.pclass2
+
+    def spawn_player1(self):  # спавн 1 игрока на рандомном спавн поинте
         self.player1 = self.pclass1(*choice(self.__spawns1), self.entities)
 
-    def spawn_player2(self):
+    def spawn_player2(self):  # спавн 2 игрока на рандомном спавн поинте
         self.player2 = self.pclass2(*choice(self.__spawns2), self.entities)
 
     def scores_to_zero(self):
@@ -52,7 +60,7 @@ class Map:
         self.entities.draw(_screen)
         self.up_blocks.draw(_screen)
 
-        _screen.blit(*text(str(self.pclass1.Scores), 208, 0, pygame.Color("Green")))
+        _screen.blit(*text(str(self.pclass1.Scores), 208, 0, pygame.Color("Green")))  # отрисовка очков
         _screen.blit(*text(str(self.pclass2.Scores), 408, 0, pygame.Color("Red")))
 
     def update(self):
@@ -60,13 +68,18 @@ class Map:
         self.entities.update(self.solid_blocks, self.entities)
         self.up_blocks.update()
 
-        if self.player1.killed:
+        if self.player1.killed:  # обработка убийства и респавн
             self.spawn_player1()
         if self.player2.killed:
             self.spawn_player2()
 
+        if self.pclass1.Scores >= 200:  # обработка выигрыша
+            self.ended = True
+        if self.pclass2.Scores >= 200:
+            self.ended = True
+
     def get_event(self, event):
-        if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass1:
+        if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass1:  # обработка начисления очков
             self.pclass1.Scores += event.scores
         if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass2:
             self.pclass2.Scores += event.scores

@@ -38,6 +38,9 @@ def game(map_id):
             level.draw(screen)
             level.update()
 
+            if level.ended:
+                running = False
+
             pygame.display.flip()
             clock.tick(50)
         except Exception as ex:

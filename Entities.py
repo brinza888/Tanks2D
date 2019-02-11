@@ -1,5 +1,6 @@
 from Tools import *
 from math import *
+from Blocks import PlayerFlag
 
 
 class BaseEntity(pygame.sprite.Sprite):  # Базовое существо
@@ -106,11 +107,6 @@ class Player(BaseEntity):  # Базовый игрок
         Player.Shoot_sound.play()
         self.bullet = Bullet(self, x, y)  # создаем пулю
 
-    def kill(self):
-        kill = pygame.event.Event(pygame.USEREVENT, scores=-10, player=self)  # создаем событие, что игрок убит
-        pygame.event.post(kill)
-        super(Player, self).kill()
-
 
 class FirstPlayer(Player):
     EntityImage = load_image("FirstPlayerTank.png")
@@ -175,13 +171,17 @@ class Bullet(BaseEntity):  # Снаряд
 
         block = pygame.sprite.spritecollideany(self, solid_blocks)
         if block is not None:  # проверка столкновений с блоками
-            block.get_damage(self.damage)
+            if not (isinstance(block, PlayerFlag) and isinstance(self.owner, block.pclass)):
+                killed = block.get_damage(self.damage)
+                if killed and isinstance(block, PlayerFlag):
+                    ev = pygame.event.Event(pygame.USEREVENT, scores=200, player=self.owner)
+                    pygame.event.post(ev)  # отправляем событие, что игрок-владелец уничтожил флаг противника
             self.kill()
-            return
 
         entity = pygame.sprite.spritecollideany(self, entities)
         if entity not in (None, self, self.owner):  # проверка столкновений с существами
             killed = entity.get_damage(self.damage)
+
             if killed and entity.__class__ is not Bullet:  # Проверка убито ли существо
                 ev = pygame.event.Event(pygame.USEREVENT, scores=10, player=self.owner)
                 pygame.event.post(ev)  # отправляем событие, что игрок-владелец убил существо

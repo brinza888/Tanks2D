@@ -12,7 +12,7 @@ screen_rect = pygame.Rect(0, 0, width, height)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Tanks 2D")
 
-logger = Logger()  # Логирование ошибок в текстовик
+logger = Logger()  # Логирование событий в текстовик
 
 
 def load_image(name, color_key=None):
