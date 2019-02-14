@@ -11,15 +11,15 @@ class BaseForm (pygame.sprite.Group):
     def draw(self, surface):
         pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
 
-    def update(self, event):
-        for element in self.sprites():
-            element.get_event(event)
-
     def add(self, *sprites):
         super(BaseForm, self).add(*sprites)
         for element in sprites:
             element.rect.x = self.x + element.x
             element.rect.y = self.y + element.y
+
+    def get_event(self, event):
+        for element in self.sprites():
+            element.get_event(event)
 
 
 class BaseElement (pygame.sprite.Sprite):
@@ -50,10 +50,6 @@ class Button (BaseElement):
         super(Button, self).__init__(*args, **kwargs)
         self.image.blit(button_text, (self.w // 2, self.h // 2))
 
-    def get_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(*event.pos):
-            return self.on_click()
-
     def on_click(self):
         pass
 
@@ -68,6 +64,18 @@ class MapButton (Button):
 
     def on_click(self):
         return self.map_id
+
+
+class Menu (BaseForm):
+    def __init__(self, *args, **kwargs):
+        super(Menu, self).__init__(*args, **kwargs)
+        self.selected = None
+
+    def get_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for element in self.sprites():
+                if element.rect.collidepoint(*event) and isinstance(element, Button):
+                    return element.on_click()
 
 
 if __name__ == "__main__":  # для тестирования классов интерфейса
