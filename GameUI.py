@@ -1,39 +1,88 @@
 from Tools import *
 
 
-class Button(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h, group, color=pygame.Color("Gray")):
-        super(Button, self).__init__(group)
-        self.x, self.y = x, y
+class BaseForm (pygame.sprite.Group):
+    def __init__(self, x, y, w, h, bg_color=pygame.Color("Gray")):
+        super(BaseForm, self).__init__()
         self.w, self.h = w, h
-        self.image = pygame.Surface((w, h), pygame.SRCALPHA, 32)
-        pygame.draw.rect(self.image, color, (0, 0, self.w, self.h))
-        self.rect = pygame.Rect((self.x, self.y, self.w, self.h))
+        self.x, self.y = x, y
+        self.bg_color = bg_color
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
 
     def update(self, event):
-        return self.rect.collidepoint(*event.pos)
+        for element in self.sprites():
+            element.get_event(event)
+
+    def add(self, *sprites):
+        super(BaseForm, self).add(*sprites)
+        for element in sprites:
+            element.rect.x = self.x + element.x
+            element.rect.y = self.y + element.y
 
 
-class LevelButton(Button):
-    def __init__(self, x, y, w, h, group, map_id):
-        super(LevelButton, self).__init__(x, y, w, h, group)
+class BaseElement (pygame.sprite.Sprite):
+    def __init__(self, x, y, w, h):
+        super(BaseElement, self).__init__()
+        self.w, self.h = w, h
+        self.x, self.y = x, y
+
+        self.image = pygame.Surface((self.w, self.h))
+        self.rect = self.image.get_rect()
+
+    def get_event(self, event):
+        pass
+
+
+class MessageBox (BaseForm):
+    def __init__(self, message, *args, **kwargs):
+        super(MessageBox, self).__init__(*args, **kwargs)
+        self.message = message
+
+    def draw(self, surface):
+        super(MessageBox, self).draw(surface)
+        surface.blit(self.message, (self.x, self.y))
+
+
+class Button (BaseElement):
+    def __init__(self, button_text, *args, **kwargs):
+        super(Button, self).__init__(*args, **kwargs)
+        self.image.blit(button_text, (self.w // 2, self.h // 2))
+
+    def get_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(*event.pos):
+            return self.on_click()
+
+    def on_click(self):
+        pass
+
+
+class MapButton (Button):
+    pattern = "{}LVL"
+
+    def __init__(self, map_id, *args, **kwargs):
         self.map_id = map_id
+        button_text = MapButton.pattern.format(map_id)
+        super(MapButton, self).__init__(button_text=button_text, *args, **kwargs)
 
-    def update(self, event):
-        if self.rect.collidepoint(*event.pos):
-            return self.map_id
+    def on_click(self):
+        return self.map_id
 
 
-class MessageBox(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h, group, color=pygame.Color("Gray")):
-        super(MessageBox, self).__init__(group)
-        self.x, self.y, self.w, self.h = x, y, w, h
-        self.color = color
-        self.image = pygame.Surface((self.w, self.h), pygame.SRCALPHA, 32)
-        pygame.draw.rect(self.image, color, (0, 0, self.w, self.h))
-        self.rect = pygame.Rect((self.x, self.y, self.w, self.h))
-        self.restart = Button(x, y + h // 2, w, (h + 1) // 2, group, pygame.Color("Green"))
-        self.restart.image.blit(*text("Вернуться в меню?", x, h // 4 - 5, pygame.Color("Black")))
+if __name__ == "__main__":  # для тестирования классов интерфейса
+    mb = MessageBox(text("MessageBox 1", pygame.Color("Red")), 100, 100, 200, 50)
+    mb.add(Button(text("Button1", pygame.Color("Red")), 40, 40, 100, 10))
 
-    def update(self, event):
-        return self.restart.update(event)
+    running = True
+    while running:
+        for ev in pygame.event.get():
+            mb.update(ev)
+            if ev.type == pygame.QUIT:
+                running = False
+
+        screen.fill((0, 0, 0))
+        mb.draw(screen)
+        pygame.display.flip()
+
+    pygame.quit()

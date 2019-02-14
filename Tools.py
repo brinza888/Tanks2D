@@ -37,13 +37,10 @@ def load_sound(name):
         logger.write("Cant load music {} because: {}".format(name, ex), logger.ERROR)
 
 
-def text(text, x, y, color):
+def text(text, color):
     font = pygame.font.Font(None, 30)
     string_rendered = font.render(text, 1, color)
-    intro_rect = string_rendered.get_rect()
-    intro_rect.top = y
-    intro_rect.x = x
-    return string_rendered, intro_rect
+    return string_rendered
 
 
 def terminate():
