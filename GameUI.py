@@ -31,11 +31,19 @@ class BaseElement (pygame.sprite.Sprite):
         self.color = color
 
         self.image = pygame.Surface((self.w, self.h))
-        pygame.draw.rect(self.image, self.color, (0, 0, self.w, self.h))
+        if color:
+            pygame.draw.rect(self.image, self.color, (0, 0, self.w, self.h))
         self.rect = self.image.get_rect()
 
     def get_event(self, event):
         pass
+
+
+class Label(BaseElement):
+    def __init__(self, *args, **kwargs):
+        super(Label, self).__init__(*args, **kwargs)
+        self.image = pygame.Surface((200, 200), pygame.SRCALPHA, 32)
+        self.rect = pygame.Rect((self.x, self.y, self.w, self.h))
 
 
 class MessageBox (BaseForm):
@@ -67,10 +75,10 @@ class Button (BaseElement):
 
 
 class MapButton (Button):
-    pattern = "{}LVL"
+    pattern = "{} MAP"
 
     def __init__(self, map_id, x, y, w, h, color):
-        button_text = text(MapButton.pattern.format(map_id), pygame.Color("Red"))
+        button_text = text(MapButton.pattern.format(map_id), pygame.Color("Black"))
         super(MapButton, self).__init__(x=x, y=y, w=w, h=h, name=map_id, button_text=button_text, color=color)
 
 
@@ -89,10 +97,12 @@ class Menu (BaseForm):
 class MainMenu (Menu):
     def __init__(self, *args, **kwargs):
         super(MainMenu, self).__init__(*args, **kwargs)
-        b1 = Button("start_game", text("Начать игру", pygame.Color("Red")), 200, 100, 200, 100, pygame.Color("Gray"))
-        b2 = Button("instructions", text("Инструкции", pygame.Color("Red")), 200, 300, 200, 100, pygame.Color("Gray"))
-        self.add(b1)
-        self.add(b2)
+        start_game = Button("start_game", text("Начать игру", pygame.Color("Black")),
+                            200, 100, 200, 100, pygame.Color("Gray"))
+        instruction = Button("instructions", text("Инструкции", pygame.Color("Black")),
+                             200, 300, 200, 100, pygame.Color("Gray"))
+        self.add(start_game)
+        self.add(instruction)
 
 
 class LevelMenu(Menu):
@@ -107,7 +117,25 @@ class LevelMenu(Menu):
 
 
 class InstructionsMenu (Menu):
-    pass
+    def __init__(self, *args, **kwargs):
+        super(InstructionsMenu, self).__init__(*args, **kwargs)
+        back_to_menu = Button("back", text("Вернуться в меню", pygame.Color("Black")),
+                              200, 20, 200, 100, pygame.Color("Gray"))
+        self.add(back_to_menu)
+        red_text = ["Красный игрок:", "^ - Вперед", "< - Влево",
+                    "v - Вниз", "> - Вправо", "Enter - Выстрел"]
+        green_text = ["Зеленый игрок: ", "W - Вперед", "A - Влево",
+                      "S - Вниз", "D - Вправо", "Пробел - Выстрел"]
+        red_instructions = Label(50, 200, 208, 400, None)
+        green_instructions = Label(400, 200, 208, 400, None)
+        self.add(red_instructions)
+        self.add(green_instructions)
+
+        y = 0
+        for num in range(len(red_text)):
+            red_instructions.image.blit(text(red_text[num], pygame.Color("Red")), (0, y))
+            green_instructions.image.blit(text(green_text[num], pygame.Color("Green")), (0, y))
+            y += 30
 
 
 if __name__ == "__main__":  # для тестирования классов интерфейса

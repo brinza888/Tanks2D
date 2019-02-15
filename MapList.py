@@ -2,13 +2,11 @@ import Tools
 
 
 class MapWrapper:
-    Title = ""
     Spawn_directions = {1: 1, 2: 3}
     Map = None
 
 
 class Test (MapWrapper):
-    Title = "Test map"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 3, 4, 8, 4, 3, 0, 0, 0, 0, 0, 0, 5],
@@ -33,7 +31,6 @@ class Test (MapWrapper):
 
 
 class FirstLevel(MapWrapper):
-    Title = "First Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 3, 0, 3, 0, 3, 4, 8, 4, 3, 0, 3, 0, 3, 0, 0, 5],
@@ -58,7 +55,6 @@ class FirstLevel(MapWrapper):
 
 
 class SecondLevel(MapWrapper):
-    Title = "Second level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 3, 0, 0, 3, 3, 0, 0, 3, 0, 0, 0, 0, 0, 5],
@@ -83,7 +79,6 @@ class SecondLevel(MapWrapper):
 
 
 class ThirdLevel(MapWrapper):
-    Title = "Third level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -108,7 +103,6 @@ class ThirdLevel(MapWrapper):
 
 
 class FourthLevel(MapWrapper):
-    Title = "Fourth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -133,7 +127,6 @@ class FourthLevel(MapWrapper):
 
 
 class FifthLevel(MapWrapper):
-    Title = "Fifth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -158,7 +151,6 @@ class FifthLevel(MapWrapper):
 
 
 class SixthLevel(MapWrapper):
-    Title = "Sixth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -183,7 +175,6 @@ class SixthLevel(MapWrapper):
 
 
 class SeventhLevel(MapWrapper):
-    Title = "Seventh Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -208,7 +199,6 @@ class SeventhLevel(MapWrapper):
 
 
 class EighthLevel(MapWrapper):
-    Title = "Eight Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -233,7 +223,6 @@ class EighthLevel(MapWrapper):
 
 
 class NinthLevel(MapWrapper):
-    Title = "Ninth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -258,7 +247,6 @@ class NinthLevel(MapWrapper):
 
 
 class TenthLevel(MapWrapper):
-    Title = "Tenth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -283,7 +271,6 @@ class TenthLevel(MapWrapper):
 
 
 class EleventhLevel(MapWrapper):
-    Title = "Eleventh Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 5],
@@ -308,7 +295,6 @@ class EleventhLevel(MapWrapper):
 
 
 class TwelveLevel(MapWrapper):
-    Title = "Twelve Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 5],
@@ -333,7 +319,6 @@ class TwelveLevel(MapWrapper):
 
 
 class ThirteenthLevel(MapWrapper):
-    Title = "Thirteenth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 5],
@@ -358,7 +343,6 @@ class ThirteenthLevel(MapWrapper):
 
 
 class FourteenthLevel(MapWrapper):
-    Title = "Fourteenth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 5],
@@ -383,7 +367,6 @@ class FourteenthLevel(MapWrapper):
 
 
 class FifteenthLevel(MapWrapper):
-    Title = "Fifteenth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 5],
@@ -408,7 +391,6 @@ class FifteenthLevel(MapWrapper):
 
 
 class SixteenthLevel(MapWrapper):
-    Title = "Sixteenth Level"
     Map = [
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 5],
