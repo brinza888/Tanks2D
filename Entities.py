@@ -72,24 +72,26 @@ class Player(BaseEntity):  # Базовый игрок
     Scores = 0
     BulletImage = load_image("NoneTexture.png")
 
+    RELOAD_EVENT = 29
+    Reloading_time = 1500
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.speed = 2
         self.counter = 0
-        self.bullet = None
+        self.is_reloading, self.bullet = False, None
         self.Invulnerability = True
 
     def update(self, solid_blocks, entities):
         super().update(solid_blocks, entities)
         if self.Invulnerability and (self.is_moving or self.bullet):
             self.Invulnerability = False
-        if self.bullet and self.bullet.killed:  # если пуля столкнулась, то разрешить стрельбу
-            self.bullet = None
 
     def shoot(self, direction):  # Стрельба
-        if self.bullet is not None:  # нельзя стрелять, пока прошлая пуля существует
+        if self.is_reloading or self.bullet:
             return
         x, y = self.rect.x, self.rect.y
+
         # вычисляем координаты, откуда полетит пуля
         if direction == 0 or direction == 2:
             y += self.rect.height // 2
@@ -103,9 +105,17 @@ class Player(BaseEntity):  # Базовый игрок
                 y -= self.rect.height // 2
             else:
                 y += self.rect.height
+
         Player.Shoot_sound.stop()  # звуки стрельбы
         Player.Shoot_sound.play()
+
         self.bullet = Bullet(self, x, y)  # создаем пулю
+        self.is_reloading = True
+        pygame.time.set_timer(self.RELOAD_EVENT, self.Reloading_time)
+
+    def get_event(self, event):
+        if event.type == self.RELOAD_EVENT:
+            self.is_reloading, self.bullet = False, None
 
 
 class FirstPlayer(Player):
@@ -113,6 +123,7 @@ class FirstPlayer(Player):
     BulletImage = load_image("FirstBullet.png")
 
     def get_event(self, event):  # Обработка событий
+        super(FirstPlayer, self).get_event(event)
         key = pygame.key.get_pressed()
         # Стрельба
         if key[pygame.K_SPACE]:
@@ -136,6 +147,7 @@ class SecondPlayer(Player):  # Противник
     BulletImage = load_image("SecondBullet.png")
 
     def get_event(self, event):  # Обработка событий
+        super(SecondPlayer, self).get_event(event)
         key = pygame.key.get_pressed()
         # Стрельба
         if key[pygame.K_RETURN]:
