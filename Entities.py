@@ -73,7 +73,7 @@ class Player(BaseEntity):  # Базовый игрок
     BulletImage = load_image("NoneTexture.png")
 
     RELOAD_EVENT = 29
-    Reloading_time = 1500
+    Reloading_time = 1000
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
