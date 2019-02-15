@@ -25,10 +25,10 @@ def game(game_map, _screen):
                 ended = game_map.get_event(event)
                 if ended:
                     if game_map.end[1] is FirstPlayer:
-                        winner_name = "First Player"
+                        winner_name = "First Player win"
                         color = pygame.Color("Green")
                     else:
-                        winner_name = "Second Player"
+                        winner_name = "Second Player win"
                         color = pygame.Color("Red")
 
                     x, y = width // 2 - 96, height // 2 - 96
