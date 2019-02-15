@@ -51,9 +51,9 @@ class MessageBox (BaseForm):
 
 
 class Button (BaseElement):
-    def __init__(self, button_text, *args, **kwargs):
+    def __init__(self, button_text, *args, dx=0, dy=0, **kwargs):
         super(Button, self).__init__(*args, **kwargs)
-        self.image.blit(button_text, (0, 0))
+        self.image.blit(button_text, (dx, dy))
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -101,7 +101,7 @@ class LevelMenu(Menu):
             for x in range(50, 468, 139):
                 counter += 1
                 self.add(MapButton(counter, text("Map " + str(counter),
-                            pygame.Color("Red")), x, y, *size, pygame.Color("Gray")))
+                            pygame.Color("Red")), x, y, *size, pygame.Color("Gray"), dx=10, dy=10))
 
 
 if __name__ == "__main__":  # для тестирования классов интерфейса
