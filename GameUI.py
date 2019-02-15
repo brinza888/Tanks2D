@@ -2,11 +2,14 @@ from Tools import *
 
 
 class BaseForm (pygame.sprite.Group):
+    background_image = None
+
     def __init__(self, x, y, w, h, bg_color=pygame.Color("Gray")):
         super(BaseForm, self).__init__()
         self.w, self.h = w, h
         self.x, self.y = x, y
         self.bg_color = bg_color
+        self.image = self.background_image
 
     def add(self, *sprites):
         super(BaseForm, self).add(*sprites)
@@ -15,7 +18,10 @@ class BaseForm (pygame.sprite.Group):
             element.rect.y = self.y + element.y
 
     def draw(self, surface):
-        pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
+        if not self.image:
+            pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
+        else:
+            surface.blit(self.image, (0, 0))
         super(BaseForm, self).draw(surface)
 
     def get_event(self, event):
@@ -75,6 +81,8 @@ class MapButton (Button):
 
 
 class Menu (BaseForm):
+    background_image = load_background("MenuBackground.jpg")
+
     def __init__(self, *args, **kwargs):
         super(Menu, self).__init__(*args, **kwargs)
         self.selected = None
@@ -108,25 +116,3 @@ class LevelMenu(Menu):
 
 class InstructionsMenu (Menu):
     pass
-
-
-if __name__ == "__main__":  # для тестирования классов интерфейса
-
-    menu = MainMenu(*screen_rect, pygame.Color("Black"))
-
-    # menu = LevelMenu(*screen_rect, pygame.Color("Black"))
-
-    # menu = MessageBox(text("MessageBox 1", pygame.Color("Red")), 100, 100, 400, 400)
-    # menu.add(Button(text("Дизайн", pygame.Color("Red")), 200, 100, 100, 100, pygame.Color("Black")))
-
-    running = True
-    while running:
-        for ev in pygame.event.get():
-            if ev.type == pygame.QUIT:
-                running = False
-
-        screen.fill((0, 0, 0))
-        menu.draw(screen)
-        pygame.display.flip()
-
-    pygame.quit()

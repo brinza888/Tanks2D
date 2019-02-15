@@ -21,7 +21,8 @@ def game(game_map, _screen):
     while game_running:
         for event in pygame.event.get():
 
-            game_map.get_event(event)
+            if not game_map.end[0]:
+                game_map.get_event(event)
 
             if event.type == pygame.QUIT:
                 terminate()
