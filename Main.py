@@ -3,25 +3,36 @@ from GameUI import *
 from Map import Map
 from MapList import get_map_wrapper
 from Entities import FirstPlayer, SecondPlayer
+from Blocks import load_blocks
 
 
 def game(game_map, _screen):
     game_running = True
 
+    game_map.generate_map()
+
+    game_map.spawn_player1()
+    game_map.spawn_player2()
+
+    game_map.scores_to_zero()
+
+    clock = pygame.time.Clock()
+
     while game_running:
         for event in pygame.event.get():
 
-            game_map.get_event()
+            game_map.get_event(event)
 
             if event.type == pygame.QUIT:
                 terminate()
 
         _screen.fill((0, 0, 0))
 
-        game_map.update()
         game_map.draw(_screen)
+        game_map.update()
 
         pygame.display.flip()
+        clock.tick(50)
 
 
 def menu(_screen, rect):
@@ -50,6 +61,8 @@ def menu(_screen, rect):
 
         pygame.display.flip()
 
+
+load_blocks()
 
 running = True
 while running:

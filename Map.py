@@ -61,8 +61,8 @@ class Map:
         self.entities.draw(_screen)
         self.up_blocks.draw(_screen)
 
-        _screen.blit(*text(str(self.pclass1.Scores), 208, 0, pygame.Color("Green")))  # отрисовка очков
-        _screen.blit(*text(str(self.pclass2.Scores), 408, 0, pygame.Color("Red")))
+        _screen.blit(text(str(self.pclass1.Scores), pygame.Color("Green")), (208, 0))  # отрисовка очков
+        _screen.blit(text(str(self.pclass2.Scores), pygame.Color("Red")), (408, 0))
 
     def update(self):
         self.down_blocks.update(self.entities)
