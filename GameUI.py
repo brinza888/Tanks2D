@@ -59,7 +59,8 @@ class MessageBox (BaseForm):
 
     def draw(self, surface):
         super(MessageBox, self).draw(surface)
-        surface.blit(self.message, (self.x, self.y))
+        text_x = self.w // 2 - self.message.get_width() // 2
+        surface.blit(self.message, (self.x + text_x, self.y))
         for button in self.sprites():
             surface.blit(button.image, (button.rect.x, button.rect.y))
 
