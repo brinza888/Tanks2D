@@ -19,12 +19,23 @@ def game(game_map, _screen):
         pygame.display.flip()
 
 
-# def menu(_screen):
-#     main_menu = MainMenu()
-#
-#     menu_running = True
-#     while menu_running:
-#         for event in pygame.event.get():
-#             if event == pygame.quit():
-#                 game_running = False
+def menu(_screen):
+    main_menu = MainMenu()
+
+    menu_running = True
+    while menu_running:
+        for event in pygame.event.get():
+
+            main_menu.get_event(event)
+
+            if event == pygame.quit():
+                menu_running = False
+
+        _screen.fill((0, 0, 0))
+
+        main_menu.draw(_screen)
+
+        pygame.display.flip()
+
+
 
