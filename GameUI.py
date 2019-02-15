@@ -101,7 +101,7 @@ class LevelMenu(Menu):
             for x in range(50, 468, 139):
                 counter += 1
                 Button(text("Map " + str(counter),
-                            pygame.Color("Black")), 200, 100, *size, self)
+                            pygame.Color("Black")), y, x, *size, self)
 
 
 if __name__ == "__main__":  # для тестирования классов интерфейса
