@@ -21,17 +21,15 @@ def game(game_map, _screen):
 
 menu = Menu(*screen_rect)
 running = True
-
 while running:
     for event in pygame.event.get():
         id = menu.get_event(event)
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            menu.get_event(event)
 
     screen.fill((0, 0, 0))
-
-
-
     menu.draw(screen)
 
     pygame.display.flip()
