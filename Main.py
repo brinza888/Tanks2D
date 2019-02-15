@@ -93,7 +93,7 @@ def menu(_screen, rect):
 
 
 pygame.mixer.music.load('music/MainTheme.wav')
-pygame.mixer.music.set_volume(0.75)
+pygame.mixer.music.set_volume(0.25)
 pygame.mixer.music.play(-1)
 
 load_blocks()
