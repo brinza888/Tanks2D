@@ -2,11 +2,14 @@ from Tools import *
 
 
 class BaseForm (pygame.sprite.Group):
+    background_image = None
+
     def __init__(self, x, y, w, h, bg_color=pygame.Color("Gray")):
         super(BaseForm, self).__init__()
         self.w, self.h = w, h
         self.x, self.y = x, y
         self.bg_color = bg_color
+        self.image = self.background_image
 
     def add(self, *sprites):
         super(BaseForm, self).add(*sprites)
@@ -15,7 +18,10 @@ class BaseForm (pygame.sprite.Group):
             element.rect.y = self.y + element.y
 
     def draw(self, surface):
-        pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
+        if not self.image:
+            pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
+        else:
+            surface.blit(self.image, (0, 0))
         super(BaseForm, self).draw(surface)
 
     def get_event(self, event):
@@ -83,6 +89,8 @@ class MapButton (Button):
 
 
 class Menu (BaseForm):
+    background_image = load_background("MenuBackground.jpg")
+
     def __init__(self, *args, **kwargs):
         super(Menu, self).__init__(*args, **kwargs)
         self.selected = None
@@ -119,15 +127,12 @@ class LevelMenu(Menu):
 class InstructionsMenu (Menu):
     def __init__(self, *args, **kwargs):
         super(InstructionsMenu, self).__init__(*args, **kwargs)
-        back_to_menu = Button("back", text("Вернуться в меню", pygame.Color("Black")),
-                              200, 20, 200, 100, pygame.Color("Gray"))
-        self.add(back_to_menu)
         red_text = ["Красный игрок:", "^ - Вперед", "< - Влево",
-                    "v - Вниз", "> - Вправо", "Enter - Выстрел"]
+                    "v - Вниз", "> - Вправо", "Enter - Выстрел", "Escape - Меню"]
         green_text = ["Зеленый игрок: ", "W - Вперед", "A - Влево",
-                      "S - Вниз", "D - Вправо", "Пробел - Выстрел"]
-        red_instructions = Label(50, 200, 208, 400, None)
-        green_instructions = Label(400, 200, 208, 400, None)
+                      "S - Вниз", "D - Вправо", "Пробел - Выстрел", "Escape - Меню"]
+        red_instructions = Label(100, 150, 200, 400, None)
+        green_instructions = Label(358, 150, 200, 400, None)
         self.add(red_instructions)
         self.add(green_instructions)
 

@@ -5,16 +5,6 @@ import pygame
 from Logging import Logger
 
 
-pygame.init()
-size = width, height = 608, 608
-screen_rect = pygame.Rect(0, 0, width, height)
-
-screen = pygame.display.set_mode(size)
-pygame.display.set_caption("Tanks 2D")
-
-logger = Logger()  # Логирование событий в текстовик
-
-
 def load_image(name, color_key=None):
     fullname = os.path.join("sprites", name)
     try:
@@ -52,5 +42,14 @@ def load_background(photo):
     # Photo должно лежать в папке sprites
     return pygame.transform.scale(load_image(photo), (width, height))
 
+
+pygame.init()
+size = width, height = 608, 608
+screen_rect = pygame.Rect(0, 0, width, height)
+
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("Tanks 2D")
+
+logger = Logger()  # Логирование событий в текстовик
 
 pygame.display.set_icon(load_image("icon.png"))
