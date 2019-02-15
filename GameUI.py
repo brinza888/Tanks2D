@@ -43,13 +43,15 @@ class MessageBox (BaseForm):
         self.buttons = []
 
     def append(self, button):
+        button.rect.x += self.x
+        button.rect.y += self.y
         self.buttons.append(button)
 
     def draw(self, surface):
         super(MessageBox, self).draw(surface)
         surface.blit(self.message, (self.x, self.y))
         for button in self.buttons:
-            surface.blit(button.image, (self.x + button.rect.x, self.y  + button.rect.y))
+            surface.blit(button.image, (button.rect.x, button.rect.y))
 
 
 class Button (BaseElement):
