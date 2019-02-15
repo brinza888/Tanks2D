@@ -10,12 +10,7 @@ class BaseForm (pygame.sprite.Group):
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
-
-    def add(self, *sprites):
-        super(BaseForm, self).add(*sprites)
-        for element in sprites:
-            element.rect.x = self.x + element.x
-            element.rect.y = self.y + element.y
+        super(BaseForm, self).draw(surface)
 
     def get_event(self, event):
         for element in self.sprites():
@@ -23,8 +18,8 @@ class BaseForm (pygame.sprite.Group):
 
 
 class BaseElement (pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h):
-        super(BaseElement, self).__init__()
+    def __init__(self, x, y, w, h, color, group):
+        super(BaseElement, self).__init__(group)
         self.w, self.h = w, h
         self.x, self.y = x, y
 
@@ -55,8 +50,6 @@ class Button (BaseElement):
         self.rect.y = self.y
 
     def on_click(self, event):
-        print(self.rect.collidepoint(event.pos))
-        print(event.pos, self.rect)
         if self.rect.collidepoint(event.pos):
             print("Ну нажал ты на меня, и что?")
 
@@ -88,8 +81,8 @@ class Menu (BaseForm):
 class MainMenu (Menu):
     def __init__(self, *args, **kwargs):
         super(MainMenu, self).__init__(*args, **kwargs)
-        Button(text("Начать игру", pygame.Color("Black")), 200, 100, 200, 200, self)
-        Button(text("Инструкции", pygame.Color("Black")), 200, 300, 200, 200, self)
+        Button(text("Начать игру", pygame.Color("Red")), 200, 100, 200, 100, pygame.Color("Gray"), self)
+        Button(text("Инструкции", pygame.Color("Red")), 200, 300, 200, 100, pygame.Color("Gray"), self)
 
 
 class LevelMenu(Menu):
@@ -101,24 +94,29 @@ class LevelMenu(Menu):
             for x in range(50, 468, 139):
                 counter += 1
                 Button(text("Map " + str(counter),
-                            pygame.Color("Black")), y, x, *size, self)
+                            pygame.Color("Red")), y, x, *size, pygame.Color("Gray"), self)
 
 
 if __name__ == "__main__":  # для тестирования классов интерфейса
-    mb = MessageBox(text("MessageBox 1", pygame.Color("Red")), 100, 100, 200, 200)
-    mb.add(Button(text("Button1", pygame.Color("Red")), 0, 50, 200, 50))
+
+    # menu = MainMenu(*screen_rect, pygame.Color("Gray"))
+
+    # menu = LevelMenu(*screen_rect, pygame.Color("Gray"))
+
+    #menu = MessageBox(text("MessageBox 1", pygame.Color("Red")), 100, 100, 200, 50)
+    #Button(text("Дизайн", pygame.Color("Red")), 100, 100, *size, pygame.Color("Gray"), menu)
+
     running = True
     while running:
         for ev in pygame.event.get():
-            mb.update(ev)
+            menu.update(ev)
             if ev.type == pygame.QUIT:
                 running = False
             if ev.type == pygame.MOUSEBUTTONDOWN:
-                for button in mb.sprites():
+                for button in menu.sprites():
                     button.on_click(ev)
 
-        screen.fill((100, 100, 100))
-        mb.draw(screen)
+        menu.draw(screen)
         pygame.display.flip()
 
     pygame.quit()
