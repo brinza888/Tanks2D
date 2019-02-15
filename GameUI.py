@@ -24,8 +24,8 @@ class BaseForm (pygame.sprite.Group):
 
 
 class BaseElement (pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h, color, group):
-        super(BaseElement, self).__init__(group)
+    def __init__(self, x, y, w, h, color):
+        super(BaseElement, self).__init__()
         self.w, self.h = w, h
         self.x, self.y = x, y
         self.color = color
@@ -88,8 +88,8 @@ class Menu (BaseForm):
 class MainMenu (Menu):
     def __init__(self, *args, **kwargs):
         super(MainMenu, self).__init__(*args, **kwargs)
-        Button(text("Начать игру", pygame.Color("Red")), 200, 100, 200, 100, pygame.Color("Gray"), self)
-        Button(text("Инструкции", pygame.Color("Red")), 200, 300, 200, 100, pygame.Color("Gray"), self)
+        self.add(Button(text("Начать игру", pygame.Color("Red")), 200, 100, 200, 100, pygame.Color("Gray")))
+        self.add(Button(text("Инструкции", pygame.Color("Red")), 200, 300, 200, 100, pygame.Color("Gray")))
 
 
 class LevelMenu(Menu):
@@ -100,8 +100,8 @@ class LevelMenu(Menu):
         for y in range(50, 468, 139):
             for x in range(50, 468, 139):
                 counter += 1
-                MapButton(counter, text("Map " + str(counter),
-                            pygame.Color("Red")), x, y, *size, pygame.Color("Gray"), self)
+                self.add(MapButton(counter, text("Map " + str(counter),
+                            pygame.Color("Red")), x, y, *size, pygame.Color("Gray")))
 
 
 if __name__ == "__main__":  # для тестирования классов интерфейса
@@ -111,7 +111,7 @@ if __name__ == "__main__":  # для тестирования классов и�
     # menu = LevelMenu(*screen_rect, pygame.Color("Black"))
 
     # menu = MessageBox(text("MessageBox 1", pygame.Color("Red")), 100, 100, 400, 400)
-    # menu.add(Button(text("Дизайн", pygame.Color("Red")), 200, 100, 100, 100, pygame.Color("Black"), menu))
+    # menu.add(Button(text("Дизайн", pygame.Color("Red")), 200, 100, 100, 100, pygame.Color("Black")))
 
     running = True
     while running:
