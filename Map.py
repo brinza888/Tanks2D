@@ -76,8 +76,10 @@ class Map:
 
         if self.pclass1.Scores >= 200:  # обработка выигрыша
             self.end = (True, self.pclass1)
+            return True
         if self.pclass2.Scores >= 200:
             self.end = (True, self.pclass2)
+            return True
 
     def get_event(self, event):
         if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass1:  # обработка начисления очков

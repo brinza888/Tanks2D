@@ -141,25 +141,3 @@ class InstructionsMenu (Menu):
             red_instructions.image.blit(text(red_text[num], pygame.Color("Red")), (0, y))
             green_instructions.image.blit(text(green_text[num], pygame.Color("Green")), (0, y))
             y += 30
-
-
-if __name__ == "__main__":  # для тестирования классов интерфейса
-
-    menu = MainMenu(*screen_rect, pygame.Color("Black"))
-
-    # menu = LevelMenu(*screen_rect, pygame.Color("Black"))
-
-    # menu = MessageBox(text("MessageBox 1", pygame.Color("Red")), 100, 100, 400, 400)
-    # menu.add(Button(text("Дизайн", pygame.Color("Red")), 200, 100, 100, 100, pygame.Color("Black")))
-
-    running = True
-    while running:
-        for ev in pygame.event.get():
-            if ev.type == pygame.QUIT:
-                running = False
-
-        screen.fill((0, 0, 0))
-        menu.draw(screen)
-        pygame.display.flip()
-
-    pygame.quit()

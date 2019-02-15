@@ -8,6 +8,7 @@ from Blocks import load_blocks
 
 def game(game_map, _screen):
     game_running = True
+    message_box = None
 
     game_map.generate_map()
 
@@ -22,7 +23,11 @@ def game(game_map, _screen):
         for event in pygame.event.get():
 
             if not game_map.end[0]:
-                game_map.get_event(event)
+                ended = game_map.get_event(event)
+                if ended:
+                    winner_name = "First Player" if game_map.end[1] is FirstPlayer else "Second Player"
+                    message_box = MessageBox(text(winner_name + " is winner!", pygame.Color("Green")),
+                                             width // 2, height // 2, 100, 50)
 
             if event.type == pygame.QUIT:
                 terminate()
@@ -36,8 +41,8 @@ def game(game_map, _screen):
 
         if not game_map.end[0]:
             game_map.update()
-        else:
-            pass  # Вывести MessageBox
+        elif message_box is not None:
+            message_box.draw(_screen)
 
         pygame.display.flip()
         clock.tick(50)
