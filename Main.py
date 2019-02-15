@@ -21,19 +21,32 @@ def game(game_map, _screen):
 
     while game_running:
         for event in pygame.event.get():
-
             if not game_map.end[0]:
                 ended = game_map.get_event(event)
                 if ended:
-                    winner_name = "First Player" if game_map.end[1] is FirstPlayer else "Second Player"
-                    message_box = MessageBox(text(winner_name + " is winner!", pygame.Color("Green")),
-                                             width // 2, height // 2, 100, 50)
+                    if game_map.end[1] is FirstPlayer:
+                        winner_name = "First Player"
+                        color = pygame.Color("Green")
+                    else:
+                        winner_name = "Second Player"
+                        color = pygame.Color("Red")
+
+                    x, y = width // 2 - 96, height // 2 - 96
+                    message_box = MessageBox(text(winner_name, color), x, y, 200, 100)
+                    message_box.add(Button("Back to Menu", text("Вернуться в меню", pygame.Color("Black")),
+                             0, 50, 200, 100, color))
 
             if event.type == pygame.QUIT:
                 terminate()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 game_running = False
+
+            if ended:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for button in message_box:
+                        if button.rect.collidepoint(event.pos):
+                            return
 
         _screen.fill((0, 0, 0))
 

@@ -74,22 +74,22 @@ class Map:
         if self.player2.killed:
             self.spawn_player2()
 
+    def get_event(self, event):
         if self.pclass1.Scores >= 200:  # обработка выигрыша
             self.end = (True, self.pclass1)
             return True
-        if self.pclass2.Scores >= 200:
+        elif self.pclass2.Scores >= 200:
             self.end = (True, self.pclass2)
             return True
+        else:
+            if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass1:  # обработка начисления очков
+                self.pclass1.Scores += event.scores
+            if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass2:
+                self.pclass2.Scores += event.scores
 
-    def get_event(self, event):
-        if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass1:  # обработка начисления очков
-            self.pclass1.Scores += event.scores
-        if event.type == pygame.USEREVENT and event.player.__class__ is self.pclass2:
-            self.pclass2.Scores += event.scores
-
-        for bl in self.down_blocks:
-            bl.get_event(event)
-        for ent in self.entities:
-            ent.get_event(event)
-        for bl in self.up_blocks:
-            bl.get_event(event)
+            for bl in self.down_blocks:
+                bl.get_event(event)
+            for ent in self.entities:
+                ent.get_event(event)
+            for bl in self.up_blocks:
+                bl.get_event(event)
