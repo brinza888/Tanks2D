@@ -8,6 +8,12 @@ class BaseForm (pygame.sprite.Group):
         self.x, self.y = x, y
         self.bg_color = bg_color
 
+    def add(self, *sprites):
+        super(BaseForm, self).add(*sprites)
+        for element in sprites:
+            element.rect.x = self.x + element.x
+            element.rect.y = self.y + element.y
+
     def draw(self, surface):
         pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
         super(BaseForm, self).draw(surface)
@@ -22,8 +28,10 @@ class BaseElement (pygame.sprite.Sprite):
         super(BaseElement, self).__init__(group)
         self.w, self.h = w, h
         self.x, self.y = x, y
+        self.color = color
 
         self.image = pygame.Surface((self.w, self.h))
+        pygame.draw.rect(self.image, self.color, (0, 0, self.w, self.h))
         self.rect = self.image.get_rect()
 
     def get_event(self, event):
@@ -45,7 +53,7 @@ class MessageBox (BaseForm):
 class Button (BaseElement):
     def __init__(self, button_text, *args, **kwargs):
         super(Button, self).__init__(*args, **kwargs)
-        self.image.blit(button_text, (self.w // 2, self.h // 2))
+        self.image.blit(button_text, (0, 0))
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -59,8 +67,7 @@ class MapButton (Button):
 
     def __init__(self, map_id, *args, **kwargs):
         self.map_id = map_id
-        button_text = MapButton.pattern.format(map_id)
-        super(MapButton, self).__init__(button_text=button_text, *args, **kwargs)
+        super(MapButton, self).__init__(*args, **kwargs)
 
     def on_click(self):
         return self.map_id
@@ -93,25 +100,22 @@ class LevelMenu(Menu):
         for y in range(50, 468, 139):
             for x in range(50, 468, 139):
                 counter += 1
-                Button(text("Map " + str(counter),
-                            pygame.Color("Red")), y, x, *size, pygame.Color("Gray"), self)
+                MapButton(counter, text("Map " + str(counter),
+                            pygame.Color("Red")), x, y, *size, pygame.Color("Gray"), self)
 
 
 if __name__ == "__main__":  # для тестирования классов интерфейса
 
-    # menu = MainMenu(*screen_rect, pygame.Color("Gray"))
+    # menu = MainMenu(*screen_rect, pygame.Color("Black"))
 
-    # menu = LevelMenu(*screen_rect, pygame.Color("Gray"))
+    # menu = LevelMenu(*screen_rect, pygame.Color("Black"))
 
-    menu = MessageBox(text("MessageBox 1", pygame.Color("Red")), 100, 100, 200, 50)
-    menu.add(Button(text("Дизайн", pygame.Color("Red")), 100, 100, *size, pygame.Color("Gray")))
+    # menu = MessageBox(text("MessageBox 1", pygame.Color("Red")), 100, 100, 400, 400)
+    # menu.add(Button(text("Дизайн", pygame.Color("Red")), 200, 100, 100, 100, pygame.Color("Black"), menu))
 
     running = True
     while running:
         for ev in pygame.event.get():
-
-            print(menu.get_event(ev))
-
             if ev.type == pygame.QUIT:
                 running = False
 

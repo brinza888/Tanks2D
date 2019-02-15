@@ -38,4 +38,3 @@ def menu(_screen):
         pygame.display.flip()
 
 
-
