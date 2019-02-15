@@ -26,10 +26,17 @@ def game(game_map, _screen):
             if event.type == pygame.QUIT:
                 terminate()
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                game_running = False
+
         _screen.fill((0, 0, 0))
 
         game_map.draw(_screen)
-        game_map.update()
+
+        if not game_map.end[0]:
+            game_map.update()
+        else:
+            pass  # Вывести MessageBox
 
         pygame.display.flip()
         clock.tick(50)
@@ -52,8 +59,12 @@ def menu(_screen, rect):
             elif isinstance(answer, int):
                 return answer
 
-            if event == pygame.QUIT:
+            if event.type == pygame.QUIT:
                 terminate()
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                menu = MainMenu(*rect)
+                continue
 
         _screen.fill((0, 0, 0))
 
