@@ -24,29 +24,35 @@ def game(game_map, _screen):
         pygame.display.flip()
 
 
-def menu(_screen):
-    main_menu = MainMenu()
+def menu(_screen, rect):
+    menu = MainMenu(*rect)
 
     menu_running = True
     while menu_running:
         for event in pygame.event.get():
 
-            ret = main_menu.get_event(event)
-            if ret is not None:
-                return ret
+            answer = menu.get_event(event)
+            if answer == "start_game":
+                menu = LevelMenu(*rect)
+                continue
+            elif answer == "instructions":
+                menu = InstructionsMenu(*rect)
+                continue
+            elif isinstance(answer, int):
+                return answer
 
             if event == pygame.QUIT:
                 terminate()
 
         _screen.fill((0, 0, 0))
 
-        main_menu.draw(_screen)
+        menu.draw(_screen)
 
         pygame.display.flip()
 
 
 running = True
 while running:
-    map_id = menu(screen)
+    map_id = menu(screen, screen_rect)
     game_map = Map(get_map_wrapper(map_id), FirstPlayer, SecondPlayer)
     game(game_map, screen)
